@@ -15,7 +15,7 @@
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Prototype-F28C28?style=flat-square)
 
-**[🚀 Live demo](#-run-it)** · **[✨ Features](#-features)** · **[🗺️ How it works](#%EF%B8%8F-how-it-works)** · **[👥 Team](#-team)**
+**[🚀 Live demo]()** · **[✨ Features](#-features)** · **[🗺️ How it works](#%EF%B8%8F-how-it-works)** · **[👥 Team](#-team)**
 
 </div>
 
@@ -143,63 +143,6 @@ flowchart LR
     style B2 fill:#FDEBD8,stroke:#F28C28,color:#1B2A5C
 ```
 
----
-
-## 🚀 Run it
-
-The whole prototype is **one file, `index.html`**, with no build step and no dependencies to install.
-
-**Locally**
-
-```bash
-git clone https://github.com/<your-username>/sobat.git
-cd sobat
-open index.html          # macOS
-# or just double-click index.html
-```
-
-**Deploy to Vercel**
-
-```bash
-npm i -g vercel
-vercel                   # run inside the project folder
-```
-
-Or drag the folder into [vercel.com/new](https://vercel.com/new). No configuration needed.
-
-> [!TIP]
-> **Try this demo path:**
-> 1. Sign in as **Site supervisor**.
-> 2. Tap the **network badge** in the status bar to go offline.
-> 3. **Register a child**. The record saves on the phone.
-> 4. Go back online and tap **Sync now**.
-> 5. Open a child and **mark the family as moving**.
-> 6. Switch to **Block officer** from the profile screen.
-
-> [!NOTE]
-> On a real phone the status bar is hidden, so use **Profile → Online/Offline** to switch modes.
-
----
-
-## 🧱 Tech
-
-| Layer | Prototype (this repo) | Production plan |
-| :--- | :--- | :--- |
-| 📱 App | Single-page HTML, CSS, vanilla JS | Android app, offline-first |
-| 💾 Storage | Browser `localStorage` | Encrypted on-device database with background sync |
-| ☁️ Backend | — | Cloud sync + web dashboard for officers |
-| 🔔 Alerts | Simulated in the app | SMS / WhatsApp to schools, anganwadis and officers |
-| 📊 Charts | Hand-built SVG (no library, works offline) | Same |
-| 🔳 QR | `qrcodejs` from cdnjs, falls back to the ID text offline | Generated on device |
-
-```
-sobat/
-├── index.html    # the entire app: markup, styles, data, logic
-└── README.md
-```
-
----
-
 ## 📍 Pilot plan
 
 | ⏱️ When | 🎯 Milestone |
@@ -235,13 +178,11 @@ sobat/
 
 | 👤 Member | 🛠️ Role |
 | :---: | :---: |
-| **Hrishikesh Amol Gavai** | Team lead · App and offline sync |
+| **Hrishikesh Amol Gavai** | Lead Developer |
 
 Built for the **Seva First Innovation Challenge 2026**, Maharashtra Zone,<br>
 Sector: **Women and Child** · Sub-theme 5: **Migrant and seasonal-worker children**
 
 ---
-
-<sub>Made with 🧡 in Nashik, for every child who moves with their family.</sub>
 
 </div>
