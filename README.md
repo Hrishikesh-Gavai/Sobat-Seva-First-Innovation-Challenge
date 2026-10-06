@@ -8,7 +8,7 @@
 [![Sector](https://img.shields.io/badge/Sector-Women%20%26%20Child-1B2A5C?style=for-the-badge)](#-the-problem)
 [![Zone](https://img.shields.io/badge/Zone-Maharashtra-1F7A7A?style=for-the-badge)](#-pilot-plan)
 
-**[🚀 Live demo]()** · **[✨ Features](#-features)** · **[🗺️ How it works](#%EF%B8%8F-how-it-works)** · **[👥 Team](#-team)**
+**[🚀 Live demo](https://sobat-seva.vercel.app/)** · **[✨ Features](#-features)** · **[🗺️ How it works](#%EF%B8%8F-how-it-works)** · **[👥 Team](#-team)**
 
 </div>
 
