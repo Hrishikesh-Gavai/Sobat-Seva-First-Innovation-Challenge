@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2A5C">
+<title>Sobat — keeps migrant children in school and anganwadi</title>
+<meta name="description" content="Sobat is an offline-first register that follows migrant workers' children from worksite to worksite, so school, anganwadi and protection services continue after every move.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2A5C; --ink-2:#2B3B78; --ink-soft:#5A668F;
+  --saffron:#F28C28; --saffron-soft:#FDEBD8; --saffron-deep:#C96A10;
+  --teal:#1F7A7A; --teal-soft:#DDF0EE;
+  --leaf:#2E8B57; --leaf-soft:#E2F3E8;
+  --brick:#C2410C; --brick-soft:#FBE6DC;
+  --mist:#EEF1F7; --line:#DCE1EC; --paper:#FFFFFF; --text:#1D2433; --muted:#6B7385;
+  --font:"Mukta","Nirmala UI","Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:10px; --r-md:16px; --r-lg:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--text);background:#DDE3EF;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.45}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px;border-radius:6px}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- desktop stage ---------- */
+.stage{min-height:100vh;display:grid;grid-template-columns:minmax(240px,320px) auto minmax(240px,320px);gap:56px;align-items:center;justify-content:center;padding:40px 32px;
+  background:radial-gradient(1200px 600px at 50% -10%,#F6F8FC 0%,#DDE3EF 60%)}
+.side h1{font-size:44px;line-height:1;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.side h1 span{display:block;font-size:22px;font-weight:600;color:var(--saffron-deep);margin-top:6px;letter-spacing:0}
+.side p{color:var(--ink-soft);margin-top:14px;max-width:34ch}
+.side h2{font-size:15px;font-weight:700;color:var(--ink);margin:28px 0 10px}
+.jump{display:flex;flex-direction:column;gap:4px}
+.jump button{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;text-align:left;color:var(--ink);font-weight:500}
+.jump button:hover{background:#fff}
+.jump button svg{color:var(--saffron-deep)}
+.tour{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px}
+.tour li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;color:var(--ink-soft)}
+.tour li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.tour b{color:var(--ink);font-weight:600}
+.credit{margin-top:28px;font-size:13px;color:var(--ink-soft)}
+.credit b{color:var(--ink)}
+
+/* ---------- phone ---------- */
+.phone{width:390px;height:844px;border-radius:56px;background:#0F1530;padding:12px;box-shadow:0 40px 80px -30px rgba(27,42,92,.55),inset 0 0 0 2px #2A3360;position:relative}
+.phone::before{content:"";position:absolute;right:-3px;top:180px;width:3px;height:84px;border-radius:2px;background:#0F1530}
+.screen{width:100%;height:100%;border-radius:44px;overflow:hidden;overflow:clip;background:var(--mist);position:relative;display:flex;flex-direction:column}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:118px;height:34px;border-radius:20px;background:#000;z-index:60}
+
+@media (max-width:1100px){.stage{grid-template-columns:auto;gap:0}.side{display:none}}
+@media (max-width:520px){
+  body{background:var(--mist)}
+  .stage{padding:0;display:block;min-height:0}
+  .phone{width:100%;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none}
+  .phone::before,.island{display:none}
+  .screen{border-radius:0}
+  .statusbar{display:none !important}
+  .appbar{padding-top:calc(env(safe-area-inset-top,0px) + 12px) !important}
+  .hero{padding-top:calc(env(safe-area-inset-top,0px) + 12px)}
+  .login .head{padding-top:calc(env(safe-area-inset-top,0px) + 32px)}
+}
+
+/* ---------- status bar ---------- */
+.statusbar{height:50px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px 34px;font-weight:700;font-size:15px;z-index:50;color:var(--ink)}
+.statusbar.dark{color:#fff;background:var(--ink)}
+.sb-right{display:flex;gap:6px;align-items:center}
+.sb-right svg{width:17px;height:17px}
+.net-btn{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:8px;font-size:12px;font-weight:700}
+.net-btn.off{background:var(--brick);color:#fff}
+.battery{width:25px;height:12px;border:1.6px solid currentColor;border-radius:4px;position:relative;opacity:.9}
+.battery::before{content:"";position:absolute;inset:1.5px;right:6px;background:currentColor;border-radius:1.5px}
+.battery::after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:4px;background:currentColor;border-radius:1px}
+
+/* ---------- app shell ---------- */
+#view{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;position:relative}
+#view::-webkit-scrollbar{display:none}
+.appbar{display:flex;align-items:center;gap:12px;padding:12px 20px 8px}
+.appbar h1{font-size:22px;font-weight:700;color:var(--ink);line-height:1.15;flex:1}
+.appbar .sub{font-size:13px;color:var(--muted);font-weight:500}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#fff;color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px}
+.pad{padding:0 20px 24px}
+.section-h{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px}
+.section-h h2{font-size:17px;font-weight:700;color:var(--ink)}
+.section-h button{font-size:14px;font-weight:600;color:var(--saffron-deep)}
+
+/* tab bar */
+.tabbar{flex:none;height:84px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);align-items:start;padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 10px);position:relative;z-index:20}
+.tabbar.four{grid-template-columns:repeat(4,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:#8A92A6;padding:6px 0}
+.tab svg{width:23px;height:23px}
+.tab.on{color:var(--ink)}
+.tab.on svg{stroke-width:2.2}
+.tab .dot{position:absolute;margin-left:18px;margin-top:-2px;min-width:16px;height:16px;border-radius:8px;background:var(--brick);color:#fff;font-size:10px;display:grid;place-items:center;padding:0 4px}
+.fab{width:58px;height:58px;border-radius:20px;background:var(--saffron);color:#fff;display:grid;place-items:center;margin:-22px auto 0;box-shadow:0 10px 22px -8px rgba(201,106,16,.8)}
+.fab svg{width:28px;height:28px;stroke-width:2.4}
+
+/* cards & blocks */
+.card{background:#fff;border-radius:var(--r-md);padding:16px;border:1px solid var(--line)}
+.site-card{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:18px;position:relative;overflow:hidden}
+.site-card .thread{position:absolute;right:-10px;top:14px;opacity:.55}
+.site-card .lbl{font-size:13px;color:#B9C3E6}
+.site-card h3{font-size:21px;font-weight:700;line-height:1.15;margin-top:2px}
+.site-card .meta{display:flex;gap:16px;margin-top:14px;font-size:13px;color:#D5DBF0}
+.site-card .meta div{display:flex;gap:6px;align-items:center}
+.site-card .meta svg{width:16px;height:16px;color:var(--saffron)}
+.sync{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.08);font-size:13.5px}
+.sync b{font-weight:700}
+.sync .grow{flex:1}
+.sync button{background:var(--saffron);color:#fff;font-weight:700;padding:6px 12px;border-radius:9px;font-size:13px}
+.sync button:disabled{opacity:.5}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:14px}
+.stat .n{font-size:30px;font-weight:800;line-height:1;color:var(--ink);display:flex;align-items:baseline;gap:6px}
+.stat .n small{font-size:14px;font-weight:600;color:var(--muted)}
+.stat .t{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.25}
+.bar{height:6px;border-radius:3px;background:var(--mist);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--leaf)}
+
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.action{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);text-align:center;line-height:1.2}
+.action .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center}
+.ic.s{background:var(--saffron-soft);color:var(--saffron-deep)}
+.ic.t{background:var(--teal-soft);color:var(--teal)}
+.ic.k{background:#E5E9F5;color:var(--ink)}
+.ic.g{background:var(--leaf-soft);color:var(--leaf)}
+.ic.b{background:var(--brick-soft);color:var(--brick)}
+
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px;text-align:left;width:100%}
+.row .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-weight:700;color:var(--ink);font-size:15px;line-height:1.25}
+.row .tx span{display:block;font-size:13px;color:var(--muted);line-height:1.3}
+.row .chev{color:#A0A7B8}
+.face{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;flex:none;font-size:15px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--leaf-soft);color:var(--leaf)}
+.chip.wait{background:var(--saffron-soft);color:var(--saffron-deep)}
+.chip.late{background:var(--brick-soft);color:var(--brick)}
+.chip.na{background:var(--mist);color:var(--muted)}
+.chip.sync{background:#E5E9F5;color:var(--ink)}
+.chip svg{width:13px;height:13px;stroke-width:2.4}
+
+/* search & filters */
+.search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 12px;height:46px;color:var(--muted)}
+.search input{border:0;outline:0;flex:1;background:none;color:var(--text);font-size:15px}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter{padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:600;font-size:13.5px;white-space:nowrap;color:var(--ink-soft)}
+.filter.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* child profile */
+.hero{background:var(--ink);color:#fff;padding:6px 20px 22px;border-radius:0 0 28px 28px}
+.hero .top{display:flex;justify-content:space-between;align-items:center}
+.hero .top .icon-btn{background:rgba(255,255,255,.12);color:#fff;box-shadow:none}
+.hero .who{display:flex;gap:14px;align-items:center;margin-top:12px}
+.hero .who .face{width:64px;height:64px;font-size:22px;border:3px solid rgba(255,255,255,.25)}
+.hero h1{font-size:24px;line-height:1.1;font-weight:700}
+.hero .id{font-size:13.5px;color:#B9C3E6;margin-top:2px}
+.hero .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.hero .facts div{background:rgba(255,255,255,.08);border-radius:12px;padding:8px 10px}
+.hero .facts small{display:block;font-size:12px;color:#B9C3E6}
+.hero .facts b{font-size:14.5px;font-weight:700;line-height:1.2;display:block}
+.tabs{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px;margin:16px 0 4px}
+.tabs button{flex:1;padding:8px 0;border-radius:10px;font-weight:700;font-size:14px;color:var(--muted)}
+.tabs button.on{background:var(--ink);color:#fff}
+.svc{display:grid;grid-template-columns:44px 1fr;gap:4px 12px;align-items:center}
+.svc>.chip{grid-column:2;justify-self:start}
+.svc .ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center}
+.svc b{display:block;color:var(--ink);font-weight:700;line-height:1.2}
+.svc span{font-size:13px;color:var(--muted)}
+.divider{height:1px;background:var(--line);margin:14px 0}
+
+/* journey */
+.journey{position:relative;padding-left:34px}
+.journey::before{content:"";position:absolute;left:12px;top:10px;bottom:24px;border-left:3px dotted var(--saffron)}
+.stop{position:relative;padding-bottom:18px}
+.stop::before{content:"";position:absolute;left:-30px;top:4px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
+.stop.now::before{background:var(--saffron);border-color:var(--saffron);box-shadow:0 0 0 5px var(--saffron-soft)}
+.stop.next::before{border-style:dashed;border-color:var(--muted)}
+.stop b{color:var(--ink);font-weight:700;display:block;line-height:1.2}
+.stop span{font-size:13px;color:var(--muted);display:block}
+.stop .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+
+/* vaccines */
+.vax{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vax div{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;background:var(--mist);font-size:13.5px;font-weight:600;color:var(--ink)}
+.vax div.done{background:var(--leaf-soft);color:var(--leaf)}
+.vax div.due{background:var(--saffron-soft);color:var(--saffron-deep)}
+.vax svg{width:16px;height:16px;stroke-width:2.4}
+
+/* forms */
+.steps{display:flex;gap:6px;margin:4px 0 18px}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--saffron)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:14px;font-weight:600;color:var(--ink)}
+.field .hint{font-size:12.5px;color:var(--muted);font-weight:400}
+.field input,.field select,.field textarea{height:48px;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:0 14px;font-size:15.5px;outline:none;width:100%}
+.field textarea{height:auto;padding:10px 14px;resize:none}
+.field input:focus,.field select:focus{border-color:var(--ink)}
+.field.err input,.field.err select{border-color:var(--brick)}
+.field .msg{font-size:12.5px;color:var(--brick);display:none}
+.field.err .msg{display:block}
+.seg{display:flex;gap:6px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:4px}
+.seg button{flex:1;height:38px;border-radius:9px;font-weight:600;color:var(--muted);font-size:14.5px}
+.seg button.on{background:var(--ink);color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photo{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.photo .ph{width:76px;height:76px;border-radius:22px;background:#fff;border:1.5px dashed #B8C0D4;display:grid;place-items:center;color:var(--muted);overflow:hidden;flex:none}
+.photo .ph img{width:100%;height:100%;object-fit:cover}
+.photo label{font-weight:700;color:var(--saffron-deep);cursor:pointer}
+.photo span{display:block;font-size:12.5px;color:var(--muted)}
+.consent{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:14px;font-size:14.5px;color:var(--text)}
+.consent ul{padding-left:18px;margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:14.5px;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--ink);margin-top:1px;flex:none}
+.sigwrap{position:relative;margin-top:8px}
+canvas.sig{width:100%;height:150px;background:#fff;border:1.5px solid var(--line);border-radius:14px;touch-action:none;display:block}
+.sigwrap .clear{position:absolute;right:10px;top:10px;font-size:13px;font-weight:700;color:var(--saffron-deep);background:#fff;padding:2px 8px;border-radius:8px}
+.sigwrap .ph-txt{position:absolute;left:0;right:0;top:58px;text-align:center;color:#A9B0C2;font-size:14px;pointer-events:none}
+.footer-btns{display:flex;gap:10px;padding:12px 20px 16px;background:linear-gradient(to top,var(--mist) 70%,rgba(238,241,247,0));position:sticky;bottom:0}
+.btn{height:52px;border-radius:14px;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px}
+.btn.primary{background:var(--saffron);color:#fff;flex:1}
+.btn.dark{background:var(--ink);color:#fff;flex:1}
+.btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.match{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:14px;border-radius:var(--r-md);background:#fff;border:1.5px solid var(--line);margin-bottom:10px}
+.match.sel{border-color:var(--ink);box-shadow:0 0 0 3px #DCE2F3}
+.match .km{font-weight:800;color:var(--ink);font-size:17px;text-align:right;line-height:1}
+.match .km small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+
+/* success */
+.done{text-align:center;padding:24px 22px}
+.done .badge{width:76px;height:76px;border-radius:50%;background:var(--leaf);color:#fff;display:grid;place-items:center;margin:8px auto 14px;box-shadow:0 0 0 10px var(--leaf-soft)}
+.done .badge svg{width:38px;height:38px;stroke-width:2.6}
+.done h1{font-size:24px;color:var(--ink);font-weight:800;line-height:1.15}
+.done p{color:var(--muted);margin-top:6px}
+.idcard{margin:20px auto 0;max-width:300px;background:var(--ink);color:#fff;border-radius:22px;padding:18px;text-align:left;position:relative;overflow:hidden}
+.idcard .row2{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.idcard .lbl{font-size:12px;color:#B9C3E6}
+.idcard .big{font-size:20px;font-weight:800;line-height:1.1}
+.qr{width:96px;height:96px;background:#fff;border-radius:12px;padding:7px;flex:none;display:grid;place-items:center;color:var(--ink);font-weight:800;font-size:12px;text-align:center}
+.qr img,.qr canvas{width:82px !important;height:82px !important}
+
+/* map */
+.mapwrap{position:relative;margin:0 0 0;background:#E7ECF3}
+.mapwrap svg.map{display:block;width:100%;height:auto}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.pin{cursor:pointer}
+.pin:focus-visible circle{stroke:var(--saffron);stroke-width:4}
+
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(15,21,48,.45);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:26px 26px 0 0;z-index:80;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s;visibility:hidden;max-height:82%;overflow-y:auto;padding:10px 20px 26px}
+.sheet.on{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.sheet .grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
+.sheet h3{font-size:20px;font-weight:700;color:var(--ink);line-height:1.2}
+.sheet p.s{color:var(--muted);font-size:14px;margin-top:2px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:14px;border:1.5px solid var(--line);margin-top:8px;text-align:left}
+.opt.sel{border-color:var(--ink);box-shadow:0 0 0 3px #DCE2F3}
+.opt b{display:block;color:var(--ink);font-weight:700;line-height:1.2}
+.opt span{font-size:13px;color:var(--muted)}
+
+/* toast */
+.toast{position:absolute;left:16px;right:16px;bottom:100px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;font-weight:600;font-size:14.5px;z-index:90;transform:translateY(20px);opacity:0;transition:.25s;pointer-events:none}
+.toast.on{transform:none;opacity:1}
+.toast svg{color:#7FD4A8}
+
+/* login / splash */
+.splash{position:absolute;inset:0;background:var(--ink);color:#fff;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s}
+.splash.hide{opacity:0;pointer-events:none}
+.splash .word{font-size:52px;font-weight:800;line-height:1}
+.splash .dev{font-size:24px;color:var(--saffron);font-weight:700;margin-top:4px}
+.splash svg.trail path{stroke-dasharray:2 11;animation:dash 1.6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-26}}
+.login{min-height:100%;display:flex;flex-direction:column;background:var(--ink);color:#fff}
+.login .head{padding:40px 26px 26px}
+.login .head .word{font-size:40px;font-weight:800;line-height:1}
+.login .head .word span{color:var(--saffron);margin-left:8px;font-size:30px}
+.login .head p{color:#C5CDEA;margin-top:10px;max-width:30ch}
+.login .body{background:var(--mist);color:var(--text);border-radius:28px 28px 0 0;flex:1;padding:24px 20px}
+.role{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;background:#fff;border:1.5px solid var(--line);width:100%;text-align:left;margin-bottom:10px}
+.role.sel{border-color:var(--ink);box-shadow:0 0 0 3px #DCE2F3}
+.role b{display:block;color:var(--ink);font-weight:700}
+.role span{font-size:13px;color:var(--muted);line-height:1.3;display:block}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid #B8C0D4;flex:none;display:grid;place-items:center}
+.sel .radio{border-color:var(--ink)}
+.sel .radio::after{content:"";width:11px;height:11px;border-radius:50%;background:var(--ink)}
+.otp{display:flex;gap:8px}
+.otp input{width:100%;height:52px;text-align:center;font-size:20px;font-weight:700;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.langs{display:flex;gap:8px;margin-bottom:18px}
+.langs button{flex:1;padding:9px 0;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:700;color:var(--ink-soft)}
+.langs button.on{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 3px #DCE2F3}
+
+/* charts */
+.chart-card h3{font-size:16px;font-weight:700;color:var(--ink)}
+.chart-card .note{font-size:13px;color:var(--muted);margin-top:1px}
+.chart-card svg{display:block;width:100%;height:auto;margin-top:10px}
+.kv{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:8px}
+.kv span{display:flex;align-items:center;gap:6px}
+.kv i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.siterow{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.siterow b{color:var(--ink);font-weight:700;line-height:1.2;display:block}
+.siterow span{font-size:13px;color:var(--muted);display:block}
+.siterow .pct{font-weight:800;color:var(--ink);font-size:17px}
+.siterow .bar{grid-column:1/-1;margin-top:0}
+
+.empty{text-align:center;padding:30px 20px;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.fade-in{animation:fi .22s ease-out}
+@keyframes fi{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="side">
+    <h1>Sobat<span>सोबत</span></h1>
+    <p>An offline-first register that follows migrant workers' children from worksite to worksite, so school, anganwadi and protection services continue after every move.</p>
+    <h2>Go to a screen</h2>
+    <div class="jump" id="jump"></div>
+  </aside>
+
+  <div class="phone" role="application" aria-label="Sobat app prototype">
+    <div class="screen" id="screen">
+      <div class="island" aria-hidden="true"></div>
+      <div class="statusbar" id="statusbar">
+        <span id="clock">9:41</span>
+        <div class="sb-right">
+          <button class="net-btn" id="netBtn" aria-label="Toggle network"></button>
+          <span class="battery" aria-hidden="true"></span>
+        </div>
+      </div>
+      <main id="view" tabindex="-1"></main>
+      <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+      <div class="scrim" id="scrim"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="splash" id="splash" aria-hidden="true">
+        <svg class="trail" width="220" height="70" viewBox="0 0 220 70"><path d="M10 55 C 60 55, 70 15, 110 15 S 160 55, 210 30" fill="none" stroke="#F28C28" stroke-width="4" stroke-linecap="round"/><circle cx="10" cy="55" r="7" fill="#fff"/><circle cx="210" cy="30" r="7" fill="#F28C28"/></svg>
+        <div class="word" style="margin-top:18px">Sobat</div>
+        <div class="dev">सोबत</div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <h2 style="margin-top:0">Try this</h2>
+    <ol class="tour">
+      <li><span>Sign in as a <b>site supervisor</b> and look at today's site.</span></li>
+      <li><span>Tap the <b>network badge</b> in the status bar to go offline.</span></li>
+      <li><span><b>Register a child</b>. The record saves on the phone and waits.</span></li>
+      <li><span>Go back online and <b>sync</b>. School and anganwadi get the alert.</span></li>
+      <li><span>Open a child and <b>mark the family as moving</b>. The record follows them.</span></li>
+      <li><span>Switch to <b>Block officer</b> to see the district picture.</span></li>
+    </ol>
+    <p class="credit">Prototype by <b>Team N.E.R.V</b>, KKWIEER Nashik, for the Seva First Innovation Challenge 2026. Sample data only; no real children's records are used.</p>
+  </aside>
+</div>
+
+<script>
+/* =========================================================
+   ICONS (hand-drawn stroke set)
+========================================================= */
+const ICONS = {
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18 14.8c2 .7 3.2 2.4 3.6 5.2"/>',
+  map:'<path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5z"/><path d="M9 4v13M15 6.5v13"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  bell:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  check:'<path d="M5 12.5 10 17.5 19 7"/>',
+  right:'<path d="m9 6 6 6-6 6"/>',
+  left:'<path d="m15 6-6 6 6 6"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  wifi:'<path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5 12.9a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M12 20h.01"/>',
+  wifioff:'<path d="M3 3l18 18"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 4.2-2.7"/><path d="M10.7 5.1A15 15 0 0 1 22 8.8"/><path d="M5 12.9a10 10 0 0 1 5.2-2.8"/><path d="M16.9 10.6A10 10 0 0 1 19 12.9"/><path d="M12 20h.01"/>',
+  cloud:'<path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.3 12.5 3.5 3.5 0 0 0 6.5 19z"/><path d="m9 14.5 2 2 4-4"/>',
+  cloudoff:'<path d="M3 3l18 18"/><path d="M8.5 6.3A6 6 0 0 1 16 10.2a4.5 4.5 0 0 1 4.6 6.4"/><path d="M17.5 19h-11a3.5 3.5 0 0 1-2.2-6.5 6 6 0 0 1 1.2-4"/>',
+  sync:'<path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M3 21v-5h5"/>',
+  school:'<path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/>',
+  heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+  syringe:'<path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3a2.4 2.4 0 0 1-3.4 0l-.6-.6a2.4 2.4 0 0 1 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/>',
+  shield:'<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  move:'<path d="M4 7h13l-3-3"/><path d="M20 17H7l3 3"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.3-7 8-7s7 2.5 8 7"/>',
+  pin:'<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  alert:'<path d="M12 3 2 20h20z"/><path d="M12 9v5"/><path d="M12 17h.01"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7"/><path d="M22 20H2"/>',
+  hat:'<path d="M2 18h20"/><path d="M4 18v-3a8 8 0 0 1 16 0v3"/><path d="M10 7v5M14 7v5"/><path d="M10 7a2 2 0 0 1 4 0"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/>',
+  lock:'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+  logout:'<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/>',
+  qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M17 20h4v-3"/>',
+  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+  file:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+  scale:'<path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7 2 14a3 3 0 0 0 6 0z"/><path d="M19 7l-3 7a3 3 0 0 0 6 0z"/>',
+  baby:'<circle cx="12" cy="7" r="4"/><path d="M10.5 7.5h.01M13.5 7.5h.01"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/>',
+  trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>'
+};
+const ic = (n, cls='') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* =========================================================
+   TRANSLATIONS (interface chrome)
+========================================================= */
+const T = {
+  en:{home:'Home',children:'Children',map:'Map',alerts:'Alerts',overview:'Overview',sites:'Sites',register:'Register child',onSite:'Children on this site',school:'Linked to school',aw:'Linked to anganwadi',waiting:'Waiting to sync',transfer:'Family moving',scan:'Scan family card',quick:'Quick actions',recent:'Needs attention',search:'Search by name or ID',save:'Save child',next:'Next',back:'Back',online:'Online',offline:'Offline',hello:'Namaskar',seeAll:'See all',syncNow:'Sync now',me:'Profile'},
+  mr:{home:'मुख्यपृष्ठ',children:'मुले',map:'नकाशा',alerts:'सूचना',overview:'आढावा',sites:'साइट्स',register:'मुलाची नोंदणी करा',onSite:'या साइटवरील मुले',school:'शाळेशी जोडलेली',aw:'अंगणवाडीशी जोडलेली',waiting:'सिंक बाकी',transfer:'कुटुंब स्थलांतर',scan:'कुटुंब कार्ड स्कॅन करा',quick:'जलद कृती',recent:'लक्ष देण्याची गरज',search:'नाव किंवा आयडीने शोधा',save:'नोंद जतन करा',next:'पुढे',back:'मागे',online:'ऑनलाइन',offline:'ऑफलाइन',hello:'नमस्कार',seeAll:'सर्व पहा',syncNow:'आता सिंक करा',me:'प्रोफाइल'},
+  hi:{home:'होम',children:'बच्चे',map:'नक्शा',alerts:'सूचनाएँ',overview:'सारांश',sites:'साइट्स',register:'बच्चे का पंजीकरण',onSite:'इस साइट पर बच्चे',school:'स्कूल से जुड़े',aw:'आंगनवाड़ी से जुड़े',waiting:'सिंक बाकी',transfer:'परिवार स्थानांतरण',scan:'परिवार कार्ड स्कैन करें',quick:'त्वरित कार्य',recent:'ध्यान देने योग्य',search:'नाम या आईडी से खोजें',save:'बच्चा सहेजें',next:'आगे',back:'पीछे',online:'ऑनलाइन',offline:'ऑफलाइन',hello:'नमस्कार',seeAll:'सभी देखें',syncNow:'अभी सिंक करें',me:'प्रोफ़ाइल'}
+};
+
+/* =========================================================
+   GEOGRAPHY (schematic Nashik, 1 unit ≈ 33 m)
+========================================================= */
+const KM = 0.033;
+const SITES = [
+  {id:'S1',name:'Ramkund Ghat Works',area:'Panchavati',x:190,y:232,workers:420,contractor:'Godavari Infra Pvt Ltd'},
+  {id:'S2',name:'Tapovan Riverfront',area:'Tapovan',x:262,y:292,workers:310,contractor:'Sahyadri Constructions'},
+  {id:'S3',name:'Nashik Road Rail Yard',area:'Nashik Road',x:305,y:140,workers:260,contractor:'Central Rail Works'},
+  {id:'S4',name:'Dwarka Flyover Works',area:'Dwarka',x:236,y:212,workers:190,contractor:'Western Highways Ltd'},
+  {id:'S5',name:'Gangapur Road Widening',area:'Gangapur Road',x:96,y:186,workers:150,contractor:'NMC Roads Division'},
+  {id:'S6',name:'Kushavart Tirtha Works',area:'Trimbakeshwar',x:22,y:132,workers:230,contractor:'Trimbak Devasthan Works',far:'28 km west'}
+];
+const SCHOOLS = [
+  {id:'E1',name:'Municipal School 23, Panchavati',x:206,y:204},
+  {id:'E2',name:'ZP Primary School, Tapovan',x:276,y:266},
+  {id:'E3',name:'Municipal School 41, Nashik Road',x:288,y:118},
+  {id:'E4',name:'Municipal School 8, Dwarka',x:252,y:192},
+  {id:'E5',name:'Municipal School 55, Gangapur Road',x:112,y:162},
+  {id:'E6',name:'ZP Primary School, Trimbakeshwar',x:36,y:158}
+];
+const AWCS = [
+  {id:'A1',name:'Anganwadi 14, Ganeshwadi',x:172,y:252},
+  {id:'A2',name:'Anganwadi 7, Tapovan',x:246,y:308},
+  {id:'A3',name:'Anganwadi 31, Nashik Road',x:322,y:162},
+  {id:'A4',name:'Anganwadi 22, Dwarka',x:218,y:196},
+  {id:'A5',name:'Anganwadi 9, Gangapur',x:78,y:206},
+  {id:'A6',name:'Anganwadi 3, Trimbakeshwar',x:30,y:108}
+];
+const byId = (arr,id)=>arr.find(o=>o.id===id);
+const dist = (a,b)=> Math.hypot(a.x-b.x,a.y-b.y)*KM + (a.far||b.far ? 0 : 0);
+const nearest = (site, list)=> list.map(o=>({...o,km:+(dist(site,o)).toFixed(1)})).sort((a,b)=>a.km-b.km);
+
+/* =========================================================
+   SAMPLE DATA (seeded so every visit looks the same)
+========================================================= */
+const TODAY = new Date(2026,9,7);
+const day = 864e5;
+const fmt = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const fmtY = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+function rng(seed){return ()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646}}
+const VAX = ['BCG','OPV 0','Penta 1','Penta 2','Penta 3','MR 1','Vitamin A','MR 2','DPT booster'];
+const ORIGINS = ['Beed','Jalna','Ahilyanagar','Dhule','Nandurbar','Yavatmal','Jhabua (MP)','Gaya (Bihar)','Ranchi (Jharkhand)','Bahraich (UP)'];
+const FACE = ['#2B3B78','#1F7A7A','#C96A10','#6B4FA0','#2E8B57','#A23B5B','#3E6BA8','#8A5A2B'];
+
+function seedChildren(){
+  const r = rng(20261007);
+  const boys = ['Aarav','Sairaj','Om','Pratik','Rohit','Ganesh','Sohan','Aryan','Vedant','Kunal','Ayaan','Shivam','Yash','Dnyanesh','Rahul','Sumit'];
+  const girls = ['Pooja','Sakshi','Anjali','Kajal','Vaishnavi','Priya','Sneha','Rani','Komal','Nandini','Shravani','Gauri','Aarti','Payal'];
+  const sur = ['Pawar','Jadhav','Gaikwad','Shinde','Rathod','Chavan','Bhosale','Kale','Mhaske','Sonawane','Yadav','Kumar','Munda','Mahato','Bhil','Valvi'];
+  const parents = ['Sunita','Manisha','Rekha','Savita','Lata','Kavita','Meena','Asha','Sangeeta','Usha'];
+  const out=[]; const used=new Set();
+  const siteW=[ ['S1',22],['S2',14],['S3',10],['S4',8],['S5',6],['S6',10] ];
+  const pick = ()=>{let t=r()*70;for(const [s,w] of siteW){if((t-=w)<0)return s}return 'S1'};
+  for(let i=0;i<70;i++){
+    const g = r()<.5?'Girl':'Boy';
+    let first = g==='Girl'? girls[Math.floor(r()*girls.length)] : boys[Math.floor(r()*boys.length)];
+    let last = sur[Math.floor(r()*sur.length)];
+    let name = first+' '+last; let k=0; while(used.has(name)&&k<5){last=sur[Math.floor(r()*sur.length)];name=first+' '+last;k++}
+    used.add(name);
+    const age = Math.max(1,Math.min(14,Math.round(1+r()*13)));
+    const siteId = pick(); const site = byId(SITES,siteId);
+    const arrivedDaysAgo = Math.floor(r()*60);
+    const arrived = new Date(TODAY - arrivedDaysAgo*day);
+    const sch = nearest(site,SCHOOLS)[0], aw = nearest(site,AWCS)[0];
+    const schoolAge = age>=6;
+    const roll = r();
+    let schoolStatus='na', schoolDays=null, awStatus='na', awDays=null;
+    if(schoolAge){
+      if((roll<.62 || (arrivedDaysAgo>10 && roll<.92)) && arrivedDaysAgo>2){schoolStatus='linked';schoolDays=Math.min(arrivedDaysAgo,1+Math.floor(r()*6))}
+      else schoolStatus = arrivedDaysAgo>7?'late':'pending';
+    }
+    if(age<6){
+      if((roll<.7 || (arrivedDaysAgo>10 && roll<.93)) && arrivedDaysAgo>1){awStatus='linked';awDays=Math.min(arrivedDaysAgo,1+Math.floor(r()*4))}
+      else awStatus = arrivedDaysAgo>7?'late':'pending';
+    }
+    const vDue = Math.min(VAX.length, age<1?3: age<2?6: age<6?8:9);
+    const vDone = Math.max(0, vDue - (r()<.35?Math.ceil(r()*2):0));
+    const prevSite = SITES.filter(s=>s.id!==siteId)[Math.floor(r()*5)];
+    const journey = [];
+    const homeDist = ORIGINS[Math.floor(r()*ORIGINS.length)];
+    journey.push({place:homeDist+' (home)',from:new Date(arrived - (80+Math.floor(r()*120))*day),to:null,kind:'home'});
+    if(r()<.55){const pf=new Date(arrived - (30+Math.floor(r()*40))*day);journey.push({place:prevSite.name,siteId:prevSite.id,from:pf,to:new Date(arrived - 2*day),kind:'site'})}
+    journey.push({place:site.name,siteId,from:arrived,to:null,kind:'site',now:true});
+    for(let j=1;j<journey.length;j++){ if(!journey[j-1].to) journey[j-1].to = new Date(journey[j].from - day); }
+    const w0 = age<1?6.5: age<3? 8+age*1.6 : age<6? 11+ (age-3)*1.9 : 17+(age-6)*2.6;
+    const weights = journey.filter(j=>j.kind==='site'||j.kind==='home').map((j,ix)=>({d:j.from,kg:+(w0 - (journey.length-1-ix)*(.3+r()*.4) + (r()-.5)*.4).toFixed(1)}));
+    out.push({
+      id:'SBT-'+(26000+i*37%9973).toString().padStart(5,'0').slice(-5)+'-'+String.fromCharCode(65+Math.floor(r()*26)),
+      name, gender:g, age, parent:parents[Math.floor(r()*parents.length)]+' '+last,
+      phone:'98'+Math.floor(10000000+r()*89999999), origin:homeDist,
+      work: siteId==='S6'||r()<.15?'Construction (temple works)':'Construction',
+      siteId, arrived, schoolId:sch.id, awId:aw.id, schoolStatus, schoolDays, awStatus, awDays,
+      cls: schoolAge? Math.max(1,Math.min(8,age-5)) : null,
+      vDue, vDone, journey, weights, synced:true, color:FACE[i%FACE.length]
+    });
+  }
+  return out;
+}
+
+/* =========================================================
+   STATE + STORAGE
+========================================================= */
+const STORE='sobat-demo-v2';
+let S = {
+  role:null, lang:'en', online:true, site:'S1', view:'login', params:{}, history:[],
+  children:[], queue:[], moves:[], reg:null, filter:'all', q:'', officerFilter:'all', mapLayer:'all'
+};
+function hydrate(arr){return arr.map(c=>({...c,arrived:new Date(c.arrived),journey:c.journey.map(j=>({...j,from:new Date(j.from),to:j.to?new Date(j.to):null})),weights:c.weights.map(w=>({...w,d:new Date(w.d)}))}))}
+function load(){
+  try{const raw=localStorage.getItem(STORE); if(raw){const d=JSON.parse(raw); S.children=hydrate(d.children); S.queue=d.queue||[]; S.moves=d.moves||[]; S.lang=d.lang||'en'; return}}catch(e){}
+  S.children=seedChildren();
+}
+function persist(){try{localStorage.setItem(STORE,JSON.stringify({children:S.children,queue:S.queue,moves:S.moves,lang:S.lang}))}catch(e){}}
+const t = k => (T[S.lang]&&T[S.lang][k])||T.en[k]||k;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const initials = n=>n.split(' ').map(p=>p[0]).slice(0,2).join('');
+const daysSince = d=>Math.max(0,Math.round((TODAY-d)/day));
+function statusChip(st, kind){
+  if(st==='linked') return `<span class="chip ok">${ic('check')}${kind==='aw'?'Anganwadi':'School'}</span>`;
+  if(st==='pending') return `<span class="chip wait">${ic('clock')}${kind==='aw'?'Anganwadi':'School'} pending</span>`;
+  if(st==='late') return `<span class="chip late">${ic('alert')}Not linked</span>`;
+  return '';
+}
+function childChips(c){
+  let h = c.age>=6? statusChip(c.schoolStatus,'school') : statusChip(c.awStatus,'aw');
+  if(!c.synced) h += ` <span class="chip sync">${ic('cloudoff')}On phone</span>`;
+  if(c.moving) h += ` <span class="chip na">${ic('move')}Moving</span>`;
+  return h;
+}
+function toast(msg, icon='check'){const el=$('#toast');el.innerHTML=ic(icon)+'<span>'+esc(msg)+'</span>';el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2600)}
+function siteKids(id){return S.children.filter(c=>c.siteId===id)}
+function needsAttention(list){return list.filter(c=>(c.age>=6?c.schoolStatus:c.awStatus)!=='linked').sort((a,b)=>a.arrived-b.arrived)}
+
+/* =========================================================
+   SVG CHARTS (no libraries, work offline)
+========================================================= */
+function barChart(labels, series, {w=330,h=170,stack=false}={}){
+  const pl=26,pr=6,pt=10,pb=24, cw=w-pl-pr, ch=h-pt-pb;
+  const max = Math.max(1,...labels.map((_,i)=> stack? series.reduce((s,se)=>s+se.values[i],0) : Math.max(...series.map(se=>se.values[i]))));
+  const nice = Math.max(4,Math.ceil(max/4)*4);
+  let g=''; for(let k=0;k<=4;k++){const y=pt+ch-ch*k/4; g+=`<line x1="${pl}" x2="${w-pr}" y1="${y}" y2="${y}" stroke="#E6EAF2"/><text x="${pl-6}" y="${y+4}" font-size="10" fill="#8A92A6" text-anchor="end">${Math.round(nice*k/4)}</text>`}
+  const gw = cw/labels.length, bw = stack? gw*.52 : (gw*.7)/series.length;
+  labels.forEach((lb,i)=>{
+    let acc=0;
+    series.forEach((se,j)=>{
+      const v=se.values[i], bh=ch*v/nice;
+      const x = stack? pl+gw*i+(gw-bw)/2 : pl+gw*i+gw*.15+bw*j;
+      const y = stack? pt+ch-acc-bh : pt+ch-bh;
+      g+=`<rect x="${x}" y="${y}" width="${bw-1.5}" height="${Math.max(0,bh)}" rx="3" fill="${se.color}"><title>${esc(se.name)} ${esc(lb)}: ${v}</title></rect>`;
+      acc+=bh;
+    });
+    g+=`<text x="${pl+gw*i+gw/2}" y="${h-7}" font-size="10" fill="#8A92A6" text-anchor="middle">${esc(lb)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${w} ${h}" role="img">${g}</svg>`;
+}
+function donut(segs,{size=150,th=22,center='',sub=''}={}){
+  const r=(size-th)/2, c=size/2, C=2*Math.PI*r, tot=segs.reduce((s,x)=>s+x.v,0)||1;
+  let off=0, g=`<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#EEF1F7" stroke-width="${th}"/>`;
+  segs.forEach(s=>{const len=C*s.v/tot; g+=`<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${th}" stroke-dasharray="${Math.max(0,len-2)} ${C}" stroke-dashoffset="${-off}" transform="rotate(-90 ${c} ${c})"><title>${esc(s.l)}: ${s.v}</title></circle>`; off+=len});
+  g+=`<text x="${c}" y="${c+4}" text-anchor="middle" font-size="26" font-weight="800" fill="#1B2A5C">${center}</text><text x="${c}" y="${c+22}" text-anchor="middle" font-size="11" fill="#6B7385">${sub}</text>`;
+  return `<svg viewBox="0 0 ${size} ${size}" style="max-width:${size}px" role="img">${g}</svg>`;
+}
+function lineChart(pts,{w=320,h=150,unit='kg'}={}){
+  if(pts.length<2) pts=[{d:new Date(pts[0].d-30*day),kg:pts[0].kg},pts[0]];
+  const pl=30,pr=14,pt=14,pb=26, cw=w-pl-pr, ch=h-pt-pb;
+  const ys=pts.map(p=>p.kg), mn=Math.floor(Math.min(...ys)-1), mx=Math.ceil(Math.max(...ys)+1);
+  const t0=pts[0].d.getTime(), t1=pts[pts.length-1].d.getTime();
+  const X=d=>pl+cw*((d.getTime()-t0)/((t1-t0)||1)), Y=v=>pt+ch-ch*(v-mn)/((mx-mn)||1);
+  let g=''; for(let k=0;k<=3;k++){const v=mn+(mx-mn)*k/3,y=Y(v);g+=`<line x1="${pl}" x2="${w-pr}" y1="${y}" y2="${y}" stroke="#E6EAF2"/><text x="${pl-6}" y="${y+4}" font-size="10" fill="#8A92A6" text-anchor="end">${v.toFixed(0)}</text>`}
+  const d=pts.map((p,i)=>(i?'L':'M')+X(p.d).toFixed(1)+' '+Y(p.kg).toFixed(1)).join(' ');
+  g+=`<path d="${d} L ${X(pts[pts.length-1].d)} ${pt+ch} L ${X(pts[0].d)} ${pt+ch} Z" fill="#FDEBD8" opacity=".6"/>`;
+  g+=`<path d="${d}" fill="none" stroke="#F28C28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  pts.forEach(p=>{g+=`<circle cx="${X(p.d)}" cy="${Y(p.kg)}" r="4.5" fill="#fff" stroke="#1B2A5C" stroke-width="2"><title>${fmt(p.d)}: ${p.kg} ${unit}</title></circle><text x="${X(p.d)}" y="${Y(p.kg)-9}" font-size="10.5" font-weight="700" fill="#1B2A5C" text-anchor="middle">${p.kg}</text><text x="${X(p.d)}" y="${h-8}" font-size="10" fill="#8A92A6" text-anchor="middle">${fmt(p.d)}</text>`});
+  return `<svg viewBox="0 0 ${w} ${h}" role="img">${g}</svg>`;
+}
+function hbars(items,{w=330,color='#1B2A5C'}={}){
+  const max=Math.max(1,...items.map(i=>i.v)), rh=26, h=items.length*rh+4;
+  let g=''; items.forEach((it,i)=>{const y=i*rh+4, bw=(w-150)*it.v/max; g+=`<text x="0" y="${y+14}" font-size="12" fill="#1D2433">${esc(it.l)}</text><rect x="122" y="${y+3}" width="${w-150}" height="14" rx="7" fill="#EEF1F7"/><rect x="122" y="${y+3}" width="${Math.max(6,bw)}" height="14" rx="7" fill="${color}"/><text x="${w}" y="${y+14}" font-size="12" font-weight="700" fill="#1B2A5C" text-anchor="end">${it.v}</text>`});
+  return `<svg viewBox="0 0 ${w} ${h}" role="img">${g}</svg>`;
+}
+
+/* =========================================================
+   MAP (schematic Nashik)
+========================================================= */
+function mapSVG({highlightChild=null, layer='all', selected=null}={}){
+  const W=360,H=420;
+  let g=`<rect width="${W}" height="${H}" fill="#E9EEF5"/>`;
+  // land blocks
+  g+=`<path d="M0 0H360V420H0Z" fill="#EEF2F7"/><path d="M60 40h90v70H60zM170 60h80v50h-80zM265 70h80v40h-80zM120 260h50v60h-50zM290 200h60v70h-60zM40 300h60v80H40z" fill="#E3E9F1"/>`;
+  // hills / green
+  g+=`<path d="M0 330 C 40 310, 80 345, 110 370 L 110 420 L 0 420Z" fill="#DCEBDF"/><ellipse cx="320" cy="380" rx="70" ry="30" fill="#DCEBDF"/><ellipse cx="140" cy="60" rx="38" ry="18" fill="#DCEBDF"/>`;
+  // roads
+  g+=`<g stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"><path d="M0 172 C 80 176, 150 196, 236 212 S 330 170, 360 150"/><path d="M200 0 C 205 80, 236 150, 236 212 S 230 330, 250 420"/><path d="M236 212 C 270 180, 300 150, 330 60"/><path d="M0 250 C 60 245, 130 236, 190 232"/></g>`;
+  g+=`<g stroke="#D6DDE8" stroke-width="1" fill="none"><path d="M0 172 C 80 176, 150 196, 236 212 S 330 170, 360 150"/><path d="M200 0 C 205 80, 236 150, 236 212 S 230 330, 250 420"/></g>`;
+  // river Godavari
+  g+=`<path d="M-10 92 C 40 108, 72 150, 112 160 S 168 192, 190 232 S 238 290, 290 302 S 338 330, 372 352" fill="none" stroke="#9CCBCB" stroke-width="16" stroke-linecap="round"/><path d="M-10 92 C 40 108, 72 150, 112 160 S 168 192, 190 232 S 238 290, 290 302 S 338 330, 372 352" fill="none" stroke="#B8DCDA" stroke-width="8" stroke-linecap="round"/>`;
+  g+=`<text x="128" y="190" font-size="11" fill="#1F7A7A" font-style="italic" transform="rotate(32 128 190)">Godavari</text>`;
+  // area labels
+  [['Panchavati',128,226],['Tapovan',282,326],['Nashik Road',262,100],['Dwarka',258,238],['Gangapur Road',62,146],['Satpur',40,268]].forEach(([n,x,y])=>g+=`<text x="${x}" y="${y}" font-size="10.5" font-weight="600" fill="#7A849B">${n}</text>`);
+  // Trimbak edge chip
+  g+=`<g transform="translate(6,72)"><rect width="104" height="22" rx="11" fill="#fff" stroke="#DCE1EC"/><text x="10" y="15" font-size="10.5" font-weight="700" fill="#1B2A5C">Trimbakeshwar 28 km</text></g>`;
+  // journey thread
+  if(highlightChild){
+    const pts = highlightChild.journey.filter(j=>j.siteId).map(j=>byId(SITES,j.siteId));
+    if(pts.length>1){g+=`<path d="M${pts.map(p=>p.x+' '+p.y).join(' L ')}" fill="none" stroke="#F28C28" stroke-width="4" stroke-dasharray="1 9" stroke-linecap="round"/>`}
+  }
+  const pin=(o,type)=>{
+    const col = type==='site'?'#F28C28': type==='school'?'#1B2A5C':'#1F7A7A';
+    const icon = type==='site'?'hat': type==='school'?'school':'heart';
+    const isSel = selected===o.id;
+    const r = type==='site'?13:9.5;
+    return `<g class="pin" tabindex="0" role="button" aria-label="${esc(o.name)}" data-pin="${type}:${o.id}" transform="translate(${o.x},${o.y})">
+      ${isSel?`<circle r="${r+8}" fill="${col}" opacity=".2"/>`:''}
+      <circle r="${r}" fill="${col}" stroke="#fff" stroke-width="3"/>
+      <svg x="${-r*.62}" y="${-r*.62}" width="${r*1.24}" height="${r*1.24}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[icon]}</svg></g>`;
+  };
+  if(layer==='all'||layer==='aw') AWCS.forEach(a=>g+=pin(a,'aw'));
+  if(layer==='all'||layer==='school') SCHOOLS.forEach(s=>g+=pin(s,'school'));
+  if(layer==='all'||layer==='site') SITES.forEach(s=>g+=pin(s,'site'));
+  // scale bar
+  g+=`<g transform="translate(284,368)"><rect width="30" height="4" fill="#1B2A5C"/><rect x="30" width="30" height="4" fill="#fff" stroke="#1B2A5C" stroke-width=".6"/><text x="0" y="-4" font-size="9.5" fill="#5A668F">0</text><text x="52" y="-4" font-size="9.5" fill="#5A668F">2 km</text></g>`;
+  return `<svg class="map" viewBox="0 58 360 322" role="img" aria-label="Schematic map of Nashik worksites, schools and anganwadis">${g}</svg>`;
+}
+
+/* =========================================================
+   VIEWS
+========================================================= */
+const V = {};
+
+V.login = ()=>`
+<div class="login fade-in">
+  <div class="head">
+    <div class="word">Sobat<span>सोबत</span></div>
+    <p>Keep every migrant child connected to school, anganwadi and care, wherever the family moves next.</p>
+  </div>
+  <div class="body">
+    <div class="langs" role="group" aria-label="Language">
+      ${[['en','English'],['mr','मराठी'],['hi','हिंदी']].map(([k,l])=>`<button data-lang="${k}" class="${S.lang===k?'on':''}">${l}</button>`).join('')}
+    </div>
+    <div class="field"><label for="mob">Mobile number</label><input id="mob" inputmode="numeric" value="98220 41736" aria-describedby="mobh"><span class="hint" id="mobh">We send a one-time code to this number.</span></div>
+    <div class="field"><label>One-time code</label><div class="otp">${'4207'.split('').map((d,i)=>`<input aria-label="Digit ${i+1}" maxlength="1" inputmode="numeric" value="${d}">`).join('')}</div></div>
+    <p style="font-weight:600;color:var(--ink);margin:6px 0 10px">I work as</p>
+    ${[['supervisor','Site supervisor','Register children on my worksite and update moves','hat'],['officer','Block officer','See every site, follow up children not yet linked','chart']].map(([k,l,d,icn])=>`
+      <button class="role ${S.roleSel===k?'sel':''}" data-role="${k}">
+        <span class="ic ${k==='supervisor'?'s':'k'}" style="width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex:none">${ic(icn)}</span>
+        <span style="flex:1"><b>${l}</b><span>${d}</span></span><span class="radio"></span></button>`).join('')}
+    <button class="btn dark" style="width:100%;margin-top:10px" data-act="signin" ${S.roleSel?'':'disabled'}>Sign in</button>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;gap:8px">${ic('lock')}<span>Children's data stays on this phone until it syncs over an encrypted connection. Only officers for this block can see it.</span></p>
+  </div>
+</div>`;
+
+V.home = ()=>{
+  const site=byId(SITES,S.site), kids=siteKids(S.site);
+  const sAge=kids.filter(c=>c.age>=6), aAge=kids.filter(c=>c.age<6);
+  const sl=sAge.filter(c=>c.schoolStatus==='linked').length, al=aAge.filter(c=>c.awStatus==='linked').length;
+  const att=needsAttention(kids).slice(0,4);
+  const pend=S.queue.length;
+  const hour=new Date().getHours();
+  return `
+<div class="fade-in">
+  <div class="appbar">
+    <div style="flex:1"><div class="sub">${t('hello')}, Sunil</div><h1>${esc(site.name)}</h1></div>
+    <button class="avatar" data-go="me" aria-label="Profile">SW</button>
+  </div>
+  <div class="pad">
+    <div class="site-card">
+      <svg class="thread" width="170" height="90" viewBox="0 0 170 90" aria-hidden="true"><path d="M5 80 C 50 80, 60 20, 100 20 S 150 60, 165 10" fill="none" stroke="#F28C28" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/></svg>
+      <div class="lbl">${t('onSite')}</div>
+      <h3 style="font-size:40px;font-weight:800;line-height:1">${kids.length}<span style="font-size:16px;font-weight:600;color:#B9C3E6;margin-left:8px">children, ${site.workers} workers</span></h3>
+      <div class="meta"><div>${ic('pin')}${esc(site.area)}, Nashik</div><div>${ic('user')}${esc(site.contractor)}</div></div>
+      <div class="sync">
+        ${S.online? (pend? ic('cloudoff') : ic('cloud')) : ic('wifioff')}
+        <div class="grow">${S.online? (pend? `<b>${pend} record${pend>1?'s':''}</b> waiting to sync` : `<b>All records synced</b>`) : `<b>Offline.</b> ${pend? pend+' saved on this phone':'New records save on this phone'}`}</div>
+        ${pend? `<button data-act="sync" ${S.online?'':'disabled'}>${t('syncNow')}</button>`:''}
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">${sl}<small>of ${sAge.length}</small></div><div class="t">${t('school')}</div><div class="bar"><i style="width:${sAge.length?sl/sAge.length*100:0}%"></i></div></div>
+      <div class="stat"><div class="n">${al}<small>of ${aAge.length}</small></div><div class="t">${t('aw')}</div><div class="bar"><i style="width:${aAge.length?al/aAge.length*100:0}%;background:var(--teal)"></i></div></div>
+    </div>
+
+    <div class="section-h"><h2>${t('quick')}</h2></div>
+    <div class="actions">
+      <button class="action" data-go="register"><span class="ic s">${ic('plus')}</span>${t('register')}</button>
+      <button class="action" data-act="scan"><span class="ic k">${ic('qr')}</span>${t('scan')}</button>
+      <button class="action" data-act="pickMove"><span class="ic t">${ic('move')}</span>${t('transfer')}</button>
+    </div>
+
+    <div class="section-h"><h2>${t('recent')}</h2><button data-go="children" data-filter="attention">${t('seeAll')}</button></div>
+    <div class="list">
+      ${att.length? att.map(rowChild).join('') : `<div class="card empty"><b>Every child here is linked</b>New arrivals will show up here until a school or anganwadi confirms them.</div>`}
+    </div>
+  </div>
+</div>`;
+};
+
+function rowChild(c){
+  const site=byId(SITES,c.siteId);
+  return `<button class="row" data-child="${c.id}">
+    <span class="face" style="background:${c.color}">${initials(c.name)}</span>
+    <span class="tx"><b>${esc(c.name)}</b><span>${c.age} yrs, ${c.gender.toLowerCase()}, arrived ${daysSince(c.arrived)===0?'today':daysSince(c.arrived)+' d ago'}${S.role==='officer'?', '+esc(site.area):''}</span><span style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${childChips(c)}</span></span>
+    ${ic('right','chev')}</button>`;
+}
+
+V.children = ()=>{
+  const base = S.role==='officer'? (S.params.site? siteKids(S.params.site): S.children) : siteKids(S.site);
+  const f=S.filter, q=S.q.trim().toLowerCase();
+  let list=base.filter(c=>{
+    const st=c.age>=6?c.schoolStatus:c.awStatus;
+    if(f==='attention' && st==='linked') return false;
+    if(f==='linked' && st!=='linked') return false;
+    if(f==='under6' && c.age>=6) return false;
+    if(f==='device' && c.synced) return false;
+    if(q && !(c.name.toLowerCase().includes(q)||c.id.toLowerCase().includes(q))) return false;
+    return true;
+  }).sort((a,b)=>b.arrived-a.arrived);
+  const title = S.params.site? byId(SITES,S.params.site).name : t('children');
+  return `<div class="fade-in">
+  <div class="appbar">${S.params.site?`<button class="icon-btn" data-back aria-label="Back">${ic('left')}</button>`:''}<div style="flex:1"><div class="sub">${base.length} registered</div><h1>${esc(title)}</h1></div>${S.role==='supervisor'?`<button class="icon-btn" data-go="register" aria-label="${t('register')}">${ic('plus')}</button>`:''}</div>
+  <div class="pad">
+    <label class="search">${ic('search')}<span class="sr">Search</span><input id="q" placeholder="${t('search')}" value="${esc(S.q)}"></label>
+    <div class="filters" role="group" aria-label="Filter">
+      ${[['all','All'],['attention','Not linked yet'],['linked','Linked'],['under6','Under 6'],['device','Saved on phone']].map(([k,l])=>`<button class="filter ${f===k?'on':''}" data-filter="${k}">${l}</button>`).join('')}
+    </div>
+    <div class="list" style="margin-top:8px">${list.length? list.map(rowChild).join('') : `<div class="card empty"><b>No children match</b>Clear the search or pick another filter.</div>`}</div>
+  </div></div>`;
+};
+
+V.child = ()=>{
+  const c=S.children.find(x=>x.id===S.params.id); if(!c) return V.home();
+  const site=byId(SITES,c.siteId), sch=byId(SCHOOLS,c.schoolId), aw=byId(AWCS,c.awId);
+  const tab=S.params.tab||'overview';
+  const schD=nearest(site,SCHOOLS).find(s=>s.id===sch.id).km, awD=nearest(site,AWCS).find(a=>a.id===aw.id).km;
+  const svcSchool = c.age>=6 ? `
+    <div class="svc"><span class="ic k">${ic('school')}</span><div><b>${esc(sch.name)}</b><span>${c.schoolStatus==='linked'?`Admitted in class ${c.cls}, confirmed in ${c.schoolDays} day${c.schoolDays>1?'s':''}`:`Class ${c.cls}, headteacher alerted ${daysSince(c.arrived)} d ago`}</span></div>${statusChip(c.schoolStatus,'school')}</div>` :
+    `<div class="svc"><span class="ic k">${ic('school')}</span><div><b>School</b><span>Not yet school age. Reminder set for age 6.</span></div><span class="chip na">Later</span></div>`;
+  const svcAw = `<div class="svc"><span class="ic t">${ic('heart')}</span><div><b>${esc(aw.name)}</b><span>${c.age<6? (c.awStatus==='linked'?'Take-home ration and growth checks active':'Anganwadi worker alerted, awaiting visit') : 'Health checks and supplementary nutrition'}</span></div>${c.age<6?statusChip(c.awStatus,'aw'):'<span class="chip ok">'+ic('check')+'Linked</span>'}</div>`;
+  const svcVax = `<div class="svc"><span class="ic g">${ic('syringe')}</span><div><b>Immunisation</b><span>${c.vDone} of ${c.vDue} doses due by this age</span></div>${c.vDone>=c.vDue?'<span class="chip ok">'+ic('check')+'Up to date</span>':'<span class="chip wait">'+(c.vDue-c.vDone)+' due</span>'}</div>`;
+  let body='';
+  if(tab==='overview') body=`
+    <div class="card">${svcSchool}<div class="divider"></div>${svcAw}<div class="divider"></div>${svcVax}</div>
+    <div class="section-h"><h2>Family</h2></div>
+    <div class="card" style="display:grid;gap:10px">
+      <div class="svc" style="grid-template-columns:44px 1fr auto"><span class="ic s">${ic('user')}</span><div><b>${esc(c.parent)}</b><span>Parent, ${esc(c.work.toLowerCase())}</span></div><a class="icon-btn" href="tel:${c.phone}" aria-label="Call parent">${ic('phone')}</a></div>
+      <div class="svc" style="grid-template-columns:44px 1fr"><span class="ic k">${ic('pin')}</span><div><b>${esc(c.origin)}</b><span>Home district, returns after the work season</span></div></div>
+      <div class="svc" style="grid-template-columns:44px 1fr"><span class="ic g">${ic('shield')}</span><div><b>Consent recorded</b><span>Signed by parent on ${fmtY(c.arrived)}</span></div></div>
+    </div>`;
+  if(tab==='journey'){
+    const stops=[...c.journey]; if(c.moving) stops.push({place:byId(SITES,c.moving.to)?.name||c.moving.to,from:new Date(c.moving.date),next:true});
+    body=`<div class="card"><div class="journey">${stops.map(j=>`
+      <div class="stop ${j.now&&!c.moving?'now':''} ${j.next?'next':''}">
+        <b>${esc(j.place)}</b>
+        <span>${j.next?'Expected from '+fmtY(j.from)+', record already sent':j.kind==='home'?'Left home '+fmtY(j.to||j.from):fmt(j.from)+' to '+(j.to?fmt(j.to):'now')}</span>
+        ${j.kind==='site'&&!j.next?`<div class="tags"><span class="chip ok">${ic('check')}Record carried</span>${j.now?'':'<span class="chip na">School attendance kept</span>'}</div>`:''}
+      </div>`).join('')}</div></div>
+    <div class="section-h"><h2>On the map</h2></div>
+    <div class="card" style="padding:0;overflow:hidden">${mapSVG({highlightChild:c,layer:'site',selected:c.siteId})}</div>`;
+  }
+  if(tab==='health'){
+    const vlist=VAX.slice(0,c.vDue);
+    body=`<div class="card chart-card"><h3>Weight at each site</h3><div class="note">Measured by the anganwadi worker on arrival</div>${lineChart(c.weights)}</div>
+    <div class="section-h"><h2>Immunisation</h2></div>
+    <div class="card"><div class="vax">${vlist.map((v,i)=>`<div class="${i<c.vDone?'done':'due'}">${i<c.vDone?ic('check'):ic('clock')}${v}</div>`).join('')}</div>
+    ${c.vDone<c.vDue?`<p style="font-size:13.5px;color:var(--muted);margin-top:12px">Due doses are shared with the ANM at ${esc(aw.name)}.</p>`:''}</div>`;
+  }
+  return `<div class="fade-in">
+  <div class="hero">
+    <div class="top"><button class="icon-btn" data-back aria-label="Back">${ic('left')}</button><button class="icon-btn" data-act="card" aria-label="Show family card">${ic('qr')}</button></div>
+    <div class="who"><span class="face" style="background:${c.color}">${initials(c.name)}</span><div><h1>${esc(c.name)}</h1><div class="id">${c.id}${c.synced?'':' (saved on phone)'}</div></div></div>
+    <div class="facts"><div><small>Age</small><b>${c.age} yrs</b></div><div><small>Class</small><b>${c.cls?c.cls:'Pre-school'}</b></div><div><small>On site</small><b>${daysSince(c.arrived)===1?'1 day':daysSince(c.arrived)+' days'}</b></div></div>
+  </div>
+  <div class="pad">
+    <div class="tabs" role="tablist">${[['overview','Services'],['journey','Journey'],['health','Health']].map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" data-tab="${k}">${l}</button>`).join('')}</div>
+    <div style="margin-top:12px">${body}</div>
+    ${S.role==='supervisor'?`<button class="btn ${c.moving?'ghost':'dark'}" style="width:100%;margin-top:18px" data-act="move" data-id="${c.id}">${ic('move')}${c.moving?'Change move details':'Mark family as moving'}</button>`:''}
+  </div></div>`;
+};
+
+/* ---------- registration ---------- */
+function newReg(){return {step:1,name:'',age:'',gender:'Girl',parent:'',phone:'',origin:'Beed',work:'Construction',arrived:TODAY.toISOString().slice(0,10),studying:'Yes',cls:'3',lastSchool:'',vaxCard:'Yes',consent:false,readAloud:false,signed:false,photo:null,school:null,aw:null}}
+V.register = ()=>{
+  const r=S.reg||(S.reg=newReg());
+  const site=byId(SITES,S.site);
+  const titles=['About the child','Family','School and health','Consent','Link services'];
+  let f='';
+  if(r.step===1) f=`
+    <div class="photo"><div class="ph" id="phbox">${r.photo?`<img src="${r.photo}" alt="Child photo">`:ic('camera')}</div><div><label for="photo">${r.photo?'Retake photo':'Add photo'}</label><span>Optional. Helps the next site recognise the child.</span><input id="photo" type="file" accept="image/*" capture="environment" class="sr"></div></div>
+    <div class="field" id="f-name"><label for="r-name">Child's full name</label><input id="r-name" data-k="name" value="${esc(r.name)}" autocomplete="off"><span class="msg">Enter the child's name.</span></div>
+    <div class="two"><div class="field" id="f-age"><label for="r-age">Age in years</label><input id="r-age" data-k="age" inputmode="numeric" value="${esc(r.age)}"><span class="msg">Enter age 0 to 14.</span></div>
+    <div class="field"><label>Gender</label><div class="seg">${['Girl','Boy'].map(g=>`<button data-seg="gender" data-v="${g}" class="${r.gender===g?'on':''}">${g}</button>`).join('')}</div></div></div>`;
+  if(r.step===2) f=`
+    <div class="field" id="f-parent"><label for="r-parent">Parent or guardian</label><input id="r-parent" data-k="parent" value="${esc(r.parent)}"><span class="msg">Enter a parent or guardian.</span></div>
+    <div class="field"><label for="r-phone">Mobile number <span class="hint">(optional)</span></label><input id="r-phone" data-k="phone" inputmode="tel" value="${esc(r.phone)}"></div>
+    <div class="field"><label for="r-origin">Home district</label><select id="r-origin" data-k="origin">${ORIGINS.map(o=>`<option ${r.origin===o?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="two"><div class="field"><label for="r-work">Work</label><select id="r-work" data-k="work">${['Construction','Brick kiln','Sugarcane cutting'].map(o=>`<option ${r.work===o?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="field"><label for="r-arr">Arrived on</label><input id="r-arr" type="date" data-k="arrived" value="${r.arrived}"></div></div>`;
+  if(r.step===3) f=`
+    ${+r.age>=6?`<div class="field"><label>Was the child in school before moving?</label><div class="seg">${['Yes','No','Never enrolled'].map(g=>`<button data-seg="studying" data-v="${g}" class="${r.studying===g?'on':''}">${g}</button>`).join('')}</div></div>
+    <div class="two"><div class="field"><label for="r-cls">Class</label><select id="r-cls" data-k="cls">${[1,2,3,4,5,6,7,8].map(o=>`<option ${r.cls==o?'selected':''}>${o}</option>`).join('')}</select></div>
+    <div class="field"><label for="r-ls">Last school <span class="hint">(if known)</span></label><input id="r-ls" data-k="lastSchool" value="${esc(r.lastSchool)}"></div></div>`
+    :`<div class="card" style="display:flex;gap:10px;margin-bottom:14px">${ic('info')}<span style="font-size:14px">Under 6, so Sobat links the child to the nearest anganwadi for nutrition and growth checks.</span></div>`}
+    <div class="field"><label>Has an immunisation card?</label><div class="seg">${['Yes','No'].map(g=>`<button data-seg="vaxCard" data-v="${g}" class="${r.vaxCard===g?'on':''}">${g}</button>`).join('')}</div><span class="hint">If no, the ANM will check doses at the first anganwadi visit.</span></div>`;
+  if(r.step===4) f=`
+    <div class="consent"><b style="color:var(--ink)">Read this to the parent in their language</b>
+      <ul><li>We record the child's name, age, school and health details.</li><li>Only the school, anganwadi and block officers can see it.</li><li>When the family moves, the record goes to the next site so the child keeps studying.</li><li>The parent can ask to delete it at any time.</li></ul>
+      <label class="check"><input type="checkbox" id="c1" ${r.readAloud?'checked':''}><span>I read this aloud and the parent understood</span></label>
+      <label class="check"><input type="checkbox" id="c2" ${r.consent?'checked':''}><span>The parent agrees</span></label>
+    </div>
+    <p style="font-weight:600;color:var(--ink);margin-top:16px">Parent's signature or thumb mark</p>
+    <div class="sigwrap"><canvas class="sig" id="sig" aria-label="Signature pad"></canvas>${r.signed?'':'<span class="ph-txt">Sign here with a finger</span>'}<button class="clear" data-act="clearSig">Clear</button></div>`;
+  if(r.step===5){
+    const age=+r.age; const schools=nearest(site,SCHOOLS).slice(0,3), aws=nearest(site,AWCS).slice(0,2);
+    if(!r.school) r.school=schools[0].id; if(!r.aw) r.aw=aws[0].id;
+    f=`<p style="color:var(--muted);margin-bottom:12px">Closest to ${esc(site.name)}. The headteacher and anganwadi worker get an alert when you save.</p>
+    ${age>=6?`<p style="font-weight:700;color:var(--ink);margin-bottom:8px">School for class ${r.cls}</p>${schools.map(s=>`<button class="match ${r.school===s.id?'sel':''}" data-pick="school" data-v="${s.id}" style="width:100%;text-align:left"><span class="ic k" style="width:44px;height:44px;border-radius:13px;display:grid;place-items:center">${ic('school')}</span><span><b style="color:var(--ink);display:block;line-height:1.2">${esc(s.name)}</b><span style="font-size:13px;color:var(--muted)">${Math.round(s.km/0.08)} min walk</span></span><span class="km">${s.km}<small>km</small></span></button>`).join('')}`:''}
+    <p style="font-weight:700;color:var(--ink);margin:14px 0 8px">Anganwadi</p>
+    ${aws.map(a=>`<button class="match ${r.aw===a.id?'sel':''}" data-pick="aw" data-v="${a.id}" style="width:100%;text-align:left"><span class="ic t" style="width:44px;height:44px;border-radius:13px;display:grid;place-items:center">${ic('heart')}</span><span><b style="color:var(--ink);display:block;line-height:1.2">${esc(a.name)}</b><span style="font-size:13px;color:var(--muted)">${age<6?'Nutrition, growth checks, pre-school':'Health checks and immunisation'}</span></span><span class="km">${a.km}<small>km</small></span></button>`).join('')}`;
+  }
+  return `<div class="fade-in" style="min-height:100%;display:flex;flex-direction:column">
+  <div class="appbar"><button class="icon-btn" data-act="regBack" aria-label="${t('back')}">${r.step===1?ic('x'):ic('left')}</button><div style="flex:1"><div class="sub">Step ${r.step} of 5</div><h1>${titles[r.step-1]}</h1></div>${S.online?'':`<span class="chip late">${ic('wifioff')}${t('offline')}</span>`}</div>
+  <div class="pad" style="flex:1"><div class="steps">${[1,2,3,4,5].map(i=>`<i class="${i<=r.step?'on':''}"></i>`).join('')}</div>${f}</div>
+  <div class="footer-btns">${r.step>1?`<button class="btn ghost" data-act="regBack">${t('back')}</button>`:''}<button class="btn ${r.step===5?'primary':'dark'}" data-act="regNext" ${r.step===4&&!(r.consent&&r.readAloud&&r.signed)?'disabled':''}>${r.step===5?t('save'):t('next')}</button></div>
+  </div>`;
+};
+
+V.success = ()=>{
+  const c=S.children.find(x=>x.id===S.params.id);
+  const sch=byId(SCHOOLS,c.schoolId), aw=byId(AWCS,c.awId);
+  return `<div class="done fade-in">
+    <div class="badge">${ic('check')}</div>
+    <h1>${esc(c.name.split(' ')[0])} is registered</h1>
+    <p>${c.synced?`Alerts sent to ${c.age>=6?esc(sch.name)+' and ':''}${esc(aw.name)}.`:`Saved on this phone. Alerts go out to the ${c.age>=6?'school and ':''}anganwadi as soon as you sync.`}</p>
+    <div class="idcard">
+      <div class="row2"><div><div class="lbl">Sobat family card</div><div class="big">${esc(c.name)}</div><div class="lbl" style="margin-top:6px">ID</div><div style="font-weight:700">${c.id}</div><div class="lbl" style="margin-top:6px">Parent</div><div style="font-weight:600">${esc(c.parent)}</div></div><div class="qr" id="qr" aria-label="QR code for ${c.id}"></div></div>
+      <p style="font-size:12.5px;color:#B9C3E6;margin-top:12px">Give this card to the parent. Any Sobat site can scan it to pick up the record.</p>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px"><button class="btn ghost" style="flex:1" data-child="${c.id}">Open record</button><button class="btn primary" data-act="regAgain">Register another</button></div>
+    <button class="btn" style="width:100%;margin-top:6px;color:var(--ink-soft)" data-go="home">Back to ${esc(byId(SITES,c.siteId).name)}</button>
+  </div>`;
+};
+
+/* ---------- map ---------- */
+V.map = ()=>{
+  const L=S.mapLayer;
+  return `<div class="fade-in">
+  <div class="appbar"><div style="flex:1"><div class="sub">Nashik, schematic view</div><h1>${t('map')}</h1></div></div>
+  <div class="pad" style="padding-bottom:10px"><div class="filters" style="padding-top:0">${[['all','Everything'],['site','Worksites'],['school','Schools'],['aw','Anganwadis']].map(([k,l])=>`<button class="filter ${L===k?'on':''}" data-layer="${k}">${l}</button>`).join('')}</div></div>
+  <div class="mapwrap">${mapSVG({layer:L,selected:S.params.sel})}</div>
+  <div class="pad"><div class="legend"><span><i style="background:#F28C28"></i>Worksite</span><span><i style="background:#1B2A5C"></i>School</span><span><i style="background:#1F7A7A"></i>Anganwadi</span><span><i style="background:#9CCBCB;border-radius:3px"></i>Godavari</span></div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px">Tap a pin to see children, distances and contacts.</p></div></div>`;
+};
+
+/* ---------- alerts ---------- */
+function buildAlerts(){
+  const scope = S.role==='officer'? S.children : siteKids(S.site);
+  const A=[];
+  scope.forEach(c=>{
+    const st=c.age>=6?c.schoolStatus:c.awStatus, place=c.age>=6?byId(SCHOOLS,c.schoolId).name:byId(AWCS,c.awId).name;
+    if(st==='late') A.push({k:'late',c,when:c.arrived,t:`${c.name} not linked for ${daysSince(c.arrived)} days`,s:`${place} has not confirmed yet`});
+    else if(st==='pending') A.push({k:'pending',c,when:c.arrived,t:`${c.name} waiting for ${c.age>=6?'school':'anganwadi'}`,s:`Alert sent to ${place}`});
+    else if(daysSince(c.arrived)<10) A.push({k:'ok',c,when:new Date(c.arrived.getTime()+(c.schoolDays||c.awDays||1)*day),t:`${c.age>=6?'School':'Anganwadi'} confirmed ${c.name}`,s:place});
+    if(c.vDone<c.vDue && c.age<6) A.push({k:'vax',c,when:new Date(TODAY-2*day),t:`${c.name}: ${c.vDue-c.vDone} vaccine dose${c.vDue-c.vDone>1?'s':''} due`,s:'Shared with the ANM'});
+    if(c.moving) A.push({k:'move',c,when:new Date(TODAY),t:`${c.name}'s family is moving`,s:`Record sent to ${byId(SITES,c.moving.to)?.name||c.moving.to}`});
+  });
+  const order={late:0,move:1,pending:2,vax:3,ok:4};
+  return A.sort((a,b)=>order[a.k]-order[b.k]||b.when-a.when);
+}
+V.alerts = ()=>{
+  const A=buildAlerts(); const f=S.params.af||'all';
+  const shown=A.filter(a=>f==='all'||(f==='act'&&(a.k==='late'||a.k==='pending'||a.k==='vax'))||(f==='done'&&(a.k==='ok'||a.k==='move')));
+  const icon={late:['alert','b'],pending:['clock','s'],ok:['check','g'],vax:['syringe','t'],move:['move','k']};
+  return `<div class="fade-in">
+  <div class="appbar"><div style="flex:1"><div class="sub">${A.filter(a=>a.k==='late').length} overdue</div><h1>${t('alerts')}</h1></div></div>
+  <div class="pad"><div class="filters" style="padding-top:0">${[['all','All'],['act','Needs action'],['done','Updates']].map(([k,l])=>`<button class="filter ${f===k?'on':''}" data-af="${k}">${l}</button>`).join('')}</div>
+  <div class="list" style="margin-top:8px">${shown.slice(0,40).map(a=>`<button class="row" data-child="${a.c.id}"><span class="ic ${icon[a.k][1]}">${ic(icon[a.k][0])}</span><span class="tx"><b>${esc(a.t)}</b><span>${esc(a.s)}${S.role==='officer'?', '+esc(byId(SITES,a.c.siteId).area):''}</span></span><span style="font-size:12px;color:var(--muted);white-space:nowrap">${daysSince(a.when)===0?'Today':daysSince(a.when)+' d'}</span></button>`).join('')}</div></div></div>`;
+};
+
+/* ---------- me ---------- */
+V.me = ()=>`<div class="fade-in">
+  <div class="appbar"><button class="icon-btn" data-back aria-label="Back">${ic('left')}</button><h1>${t('me')}</h1></div>
+  <div class="pad">
+    <div class="card" style="display:flex;gap:14px;align-items:center"><span class="avatar" style="width:56px;height:56px;font-size:19px">${S.role==='officer'?'MD':'SW'}</span><div><b style="color:var(--ink);font-size:18px;display:block;line-height:1.2">${S.role==='officer'?'M. Deshmukh':'Sunil Wagh'}</b><span style="color:var(--muted);font-size:14px">${S.role==='officer'?'Block Education Officer, Nashik Urban':'Site supervisor, '+byId(SITES,S.site).name}</span></div></div>
+    <div class="section-h"><h2>Language</h2></div>
+    <div class="langs">${[['en','English'],['mr','मराठी'],['hi','हिंदी']].map(([k,l])=>`<button data-lang="${k}" class="${S.lang===k?'on':''}">${l}</button>`).join('')}</div>
+    <div class="list">
+      <button class="row" data-act="toggleNet"><span class="ic ${S.online?'g':'b'}">${ic(S.online?'wifi':'wifioff')}</span><span class="tx"><b>${S.online?'Online':'Offline mode'}</b><span>${S.online?'Records sync automatically':'New records stay on this phone'}</span></span><span class="chip ${S.online?'ok':'late'}">${S.online?t('online'):t('offline')}</span></button>
+      <button class="row" data-act="switchRole"><span class="ic k">${ic('users')}</span><span class="tx"><b>Switch to ${S.role==='officer'?'site supervisor':'block officer'}</b><span>See the app the way the other role does</span></span>${ic('right','chev')}</button>
+      <div class="row"><span class="ic t">${ic('lock')}</span><span class="tx"><b>Data protection</b><span>Encrypted on the phone and in transit. Parents can ask for deletion. Access is limited to this block.</span></span></div>
+      <button class="row" data-act="reset"><span class="ic s">${ic('sync')}</span><span class="tx"><b>Reset sample data</b><span>Restore the demo to its starting state</span></span></button>
+      <button class="row" data-act="logout"><span class="ic b">${ic('logout')}</span><span class="tx"><b>Sign out</b></span></button>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:16px">Sobat prototype, version 0.4. All names and records are sample data.</p>
+  </div></div>`;
+
+/* ---------- officer dashboard ---------- */
+V.dash = ()=>{
+  const K=S.children, school=K.filter(c=>c.age>=6), small=K.filter(c=>c.age<6);
+  const linkedS=school.filter(c=>c.schoolStatus==='linked'), linkedA=small.filter(c=>c.awStatus==='linked');
+  const late=K.filter(c=>(c.age>=6?c.schoolStatus:c.awStatus)==='late');
+  const pend=K.filter(c=>(c.age>=6?c.schoolStatus:c.awStatus)==='pending');
+  const days=[...linkedS.map(c=>c.schoolDays),...linkedA.map(c=>c.awDays)].filter(Boolean);
+  const avg=days.length?(days.reduce((a,b)=>a+b,0)/days.length).toFixed(1):'0';
+  // weekly arrivals (8 weeks)
+  const weeks=[...Array(8)].map((_,i)=>{const end=new Date(TODAY-(7*(7-i))*day);return end});
+  const lab=weeks.map(d=>fmt(new Date(d-6*day)).replace(' ','\u00a0'));
+  const inW=(c,i)=>{const e=weeks[i],s=new Date(e-7*day);return c.arrived>s&&c.arrived<=e};
+  const arrivals=weeks.map((_,i)=>K.filter(c=>inW(c,i)).length);
+  const linkedW=weeks.map((_,i)=>K.filter(c=>inW(c,i)&&(c.age>=6?c.schoolStatus:c.awStatus)==='linked').length);
+  const orig={}; K.forEach(c=>orig[c.origin]=(orig[c.origin]||0)+1);
+  const origins=Object.entries(orig).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([l,v])=>({l,v}));
+  const ages=[['0–2',0,2],['3–5',3,5],['6–10',6,10],['11–14',11,14]].map(([l,a,b])=>({l,v:K.filter(c=>c.age>=a&&c.age<=b).length}));
+  const pctS=Math.round(linkedS.length/(school.length||1)*100);
+  return `<div class="fade-in">
+  <div class="appbar"><div style="flex:1"><div class="sub">Nashik Urban block, ${fmtY(TODAY)}</div><h1>${t('overview')}</h1></div><button class="avatar" data-go="me" aria-label="Profile">MD</button></div>
+  <div class="pad">
+    <div class="site-card">
+      <svg class="thread" width="170" height="90" viewBox="0 0 170 90" aria-hidden="true"><path d="M5 80 C 50 80, 60 20, 100 20 S 150 60, 165 10" fill="none" stroke="#F28C28" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/></svg>
+      <div class="lbl">Migrant children registered across ${SITES.length} Kumbh worksites</div>
+      <h3 style="font-size:44px;font-weight:800;line-height:1;margin-top:6px">${K.length}</h3>
+      <div class="meta"><div>${ic('school')}${pctS}% of school-age in school</div><div>${ic('clock')}${avg} days to link</div></div>
+    </div>
+    <div class="kpi" style="margin-top:12px">
+      <button class="stat" style="text-align:left" data-go="alerts"><div class="n" style="color:var(--brick)">${late.length}</div><div class="t">Not linked after 7 days</div></button>
+      <button class="stat" style="text-align:left" data-go="alerts"><div class="n">${pend.length}</div><div class="t">Waiting for school or anganwadi</div></button>
+    </div>
+
+    <div class="section-h"><h2>Arrivals and links</h2></div>
+    <div class="card chart-card"><h3>New children per week</h3><div class="note">Linked means a school or anganwadi confirmed them</div>
+      ${barChart(lab.map(l=>l.split('\u00a0')[0]),[{name:'Arrived',color:'#C9D2EA',values:arrivals},{name:'Linked',color:'#F28C28',values:linkedW}])}
+      <div class="kv"><span><i style="background:#C9D2EA"></i>Arrived</span><span><i style="background:#F28C28"></i>Linked</span><span style="margin-left:auto">Week starting</span></div></div>
+
+    <div class="card chart-card" style="margin-top:10px;display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center">
+      ${donut([{l:'Linked',v:linkedS.length+linkedA.length,c:'#2E8B57'},{l:'Waiting',v:pend.length,c:'#F28C28'},{l:'Overdue',v:late.length,c:'#C2410C'}],{center:Math.round((linkedS.length+linkedA.length)/K.length*100)+'%',sub:'linked'})}
+      <div><h3>Status today</h3><div class="kv" style="flex-direction:column;gap:8px;margin-top:10px">
+        <span><i style="background:#2E8B57"></i>Linked, ${linkedS.length+linkedA.length}</span><span><i style="background:#F28C28"></i>Waiting, ${pend.length}</span><span><i style="background:#C2410C"></i>Overdue, ${late.length}</span></div></div></div>
+
+    <div class="section-h"><h2>Where families come from</h2></div>
+    <div class="card chart-card">${hbars(origins)}</div>
+
+    <div class="section-h"><h2>Children by age</h2></div>
+    <div class="card chart-card">${barChart(ages.map(a=>a.l),[{name:'Children',color:'#1F7A7A',values:ages.map(a=>a.v)}],{h:150})}<div class="note" style="margin-top:6px">Under 6 go to anganwadi; 6 to 14 go to school under RTE.</div></div>
+
+    <div class="section-h"><h2>Worksites</h2><button data-go="sites">${t('seeAll')}</button></div>
+    <div class="card" style="display:grid;gap:14px">${siteRows(3)}</div>
+  </div></div>`;
+};
+function siteRows(n){
+  return SITES.map(s=>{const k=siteKids(s.id);const l=k.filter(c=>(c.age>=6?c.schoolStatus:c.awStatus)==='linked').length;const p=k.length?Math.round(l/k.length*100):0;return {s,k,l,p}})
+   .sort((a,b)=>a.p-b.p).slice(0,n).map(({s,k,l,p})=>`<button class="siterow" style="text-align:left" data-site="${s.id}"><div><b>${esc(s.name)}</b><span>${esc(s.area)}${s.far?', '+s.far:''}, ${k.length} children</span></div><div class="pct" style="color:${p<60?'var(--brick)':p<80?'var(--saffron-deep)':'var(--leaf)'}">${p}%</div><div class="bar"><i style="width:${p}%;background:${p<60?'var(--brick)':p<80?'var(--saffron)':'var(--leaf)'}"></i></div></button>`).join('');
+}
+V.sites = ()=>`<div class="fade-in">
+  <div class="appbar"><div style="flex:1"><div class="sub">Sorted by lowest share linked</div><h1>${t('sites')}</h1></div></div>
+  <div class="pad"><div class="card" style="display:grid;gap:16px">${siteRows(SITES.length)}</div>
+  <p style="font-size:13px;color:var(--muted);margin-top:12px">Tap a worksite to see its children.</p></div></div>`;
+
+/* =========================================================
+   SHEETS
+========================================================= */
+function openSheet(html){$('#sheet').innerHTML='<div class="grab"></div>'+html;$('#sheet').classList.add('on');$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#sheet button');f&&f.focus()},50)}
+function closeSheet(){$('#sheet').classList.remove('on');$('#scrim').classList.remove('on')}
+
+function moveSheet(id){
+  const c=S.children.find(x=>x.id===id); const sel=c.moving?.to||'';
+  const opts=SITES.filter(s=>s.id!==c.siteId);
+  openSheet(`<h3>Where is ${esc(c.name.split(' ')[0])}'s family going?</h3><p class="s">Sobat sends the record ahead, so the next site is ready when they arrive.</p>
+   ${opts.map(s=>`<button class="opt ${sel===s.id?'sel':''}" data-dest="${s.id}"><span class="ic s" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center">${ic('hat')}</span><span style="flex:1"><b>${esc(s.name)}</b><span>${esc(s.area)}${s.far?', '+s.far:''}</span></span></button>`).join('')}
+   <button class="opt ${sel==='home'?'sel':''}" data-dest="home"><span class="ic k" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center">${ic('pin')}</span><span style="flex:1"><b>Back home to ${esc(c.origin)}</b><span>Record goes to the home district's block office</span></span></button>
+   <div class="field" style="margin-top:14px"><label for="mvdate">Leaving on</label><input type="date" id="mvdate" value="${c.moving?.date||new Date(TODAY.getTime()+3*day).toISOString().slice(0,10)}"></div>
+   <button class="btn dark" style="width:100%" data-act="confirmMove" data-id="${c.id}">Send record ahead</button>`);
+  S.params.dest=sel;
+}
+function pickMoveSheet(){
+  const kids=siteKids(S.site);
+  openSheet(`<h3>Which child's family is moving?</h3><p class="s">Pick a child. Brothers and sisters can be moved from their own records.</p><div class="list" style="margin-top:10px">${kids.slice(0,8).map(rowChild).join('')}</div>`);
+}
+function pinSheet(type,id){
+  if(type==='site'){
+    const s=byId(SITES,id), k=siteKids(id), l=k.filter(c=>(c.age>=6?c.schoolStatus:c.awStatus)==='linked').length;
+    const sch=nearest(s,SCHOOLS)[0], aw=nearest(s,AWCS)[0];
+    openSheet(`<div style="display:flex;gap:12px;align-items:center"><span class="ic s" style="width:48px;height:48px;border-radius:14px;display:grid;place-items:center">${ic('hat')}</span><div><h3>${esc(s.name)}</h3><p class="s">${esc(s.area)}${s.far?', '+s.far:''}, ${s.workers} workers</p></div></div>
+      <div class="stats"><div class="stat"><div class="n">${k.length}</div><div class="t">Children</div></div><div class="stat"><div class="n">${k.length?Math.round(l/k.length*100):0}%</div><div class="t">Linked</div><div class="bar"><i style="width:${k.length?l/k.length*100:0}%"></i></div></div></div>
+      <div class="list" style="margin-top:12px"><div class="row"><span class="ic k">${ic('school')}</span><span class="tx"><b>${esc(sch.name)}</b><span>Nearest school, ${sch.km} km</span></span></div><div class="row"><span class="ic t">${ic('heart')}</span><span class="tx"><b>${esc(aw.name)}</b><span>Nearest anganwadi, ${aw.km} km</span></span></div></div>
+      <button class="btn dark" style="width:100%;margin-top:14px" data-site="${s.id}">See children</button>`);
+  } else {
+    const o=byId(type==='school'?SCHOOLS:AWCS,id);
+    const k=S.children.filter(c=>type==='school'?(c.schoolId===id&&c.age>=6):(c.awId===id&&c.age<6));
+    const near=nearest(o,SITES)[0];
+    openSheet(`<div style="display:flex;gap:12px;align-items:center"><span class="ic ${type==='school'?'k':'t'}" style="width:48px;height:48px;border-radius:14px;display:grid;place-items:center">${ic(type==='school'?'school':'heart')}</span><div><h3>${esc(o.name)}</h3><p class="s">${near.km} km from ${esc(near.name)}</p></div></div>
+      <div class="stats"><div class="stat"><div class="n">${k.filter(c=>(type==='school'?c.schoolStatus:c.awStatus)==='linked').length}</div><div class="t">Migrant children ${type==='school'?'admitted':'enrolled'}</div></div><div class="stat"><div class="n">${k.filter(c=>(type==='school'?c.schoolStatus:c.awStatus)!=='linked').length}</div><div class="t">Waiting for a reply</div></div></div>
+      <div class="list" style="margin-top:12px">${k.slice(0,4).map(rowChild).join('')||'<div class="card empty"><b>No children assigned yet</b></div>'}</div>`);
+  }
+}
+function cardSheet(id){
+  const c=S.children.find(x=>x.id===id);
+  openSheet(`<h3>Family card</h3><p class="s">Any Sobat site can scan this to pick up ${esc(c.name.split(' ')[0])}'s record.</p>
+    <div class="idcard" style="margin-top:14px;max-width:none"><div class="row2"><div><div class="lbl">Sobat family card</div><div class="big">${esc(c.name)}</div><div class="lbl" style="margin-top:6px">ID</div><div style="font-weight:700">${c.id}</div><div class="lbl" style="margin-top:6px">Home district</div><div style="font-weight:600">${esc(c.origin)}</div></div><div class="qr" id="qr2"></div></div></div>`);
+  drawQR('qr2',c.id);
+}
+function scanSheet(){
+  const pick=S.children.filter(c=>c.siteId!==S.site)[3];
+  openSheet(`<h3>Scan family card</h3><p class="s">Point the camera at the QR code on the parent's card.</p>
+    <div style="margin:14px auto 0;width:220px;height:220px;border-radius:22px;background:#0F1530;position:relative;display:grid;place-items:center;overflow:hidden">
+      <div style="position:absolute;inset:26px;border:3px solid #F28C28;border-radius:16px"></div>
+      <div style="position:absolute;left:26px;right:26px;height:2px;background:#F28C28;top:50%;box-shadow:0 0 12px #F28C28;animation:scan 1.8s ease-in-out infinite alternate"></div>
+      <span style="color:#B9C3E6;font-size:13px;position:absolute;bottom:8px">Looking for a code</span></div>
+    <style>@keyframes scan{from{transform:translateY(-70px)}to{transform:translateY(70px)}}</style>
+    <button class="btn dark" style="width:100%;margin-top:16px" data-act="scanFound" data-id="${pick.id}">Simulate a scan</button>`);
+}
+
+/* =========================================================
+   QR (uses qrcodejs from cdnjs when online; shows ID otherwise)
+========================================================= */
+function drawQR(elId, text){
+  const el=document.getElementById(elId); if(!el) return;
+  const go=()=>{ el.innerHTML=''; try{ new QRCode(el,{text:'https://sobat.app/c/'+text,width:82,height:82,colorDark:'#1B2A5C',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}) }catch(e){ el.textContent=text } };
+  if(window.QRCode) return go();
+  el.textContent=text;
+  if(!drawQR.loading){drawQR.loading=true;const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=()=>{drawQR.ready=true;document.querySelectorAll('.qr').forEach(q=>{const id=q.dataset.text;if(id)drawQR(q.id,id)})};document.head.appendChild(s)}
+  el.dataset.text=text;
+}
+
+/* =========================================================
+   RENDER + NAV
+========================================================= */
+const TABS = {
+  supervisor:[['home','home'],['children','users'],['register','plus'],['map','map'],['alerts','bell']],
+  officer:[['dash','chart','overview'],['sites','hat'],['map','map'],['alerts','bell']]
+};
+function renderTabs(){
+  const tb=$('#tabbar');
+  if(!S.role||['register','success','login'].includes(S.view)){tb.style.display='none';return}
+  tb.style.display='grid';
+  const tabs=TABS[S.role]; tb.className='tabbar'+(tabs.length===4?' four':'');
+  const late=buildAlerts().filter(a=>a.k==='late').length;
+  tb.innerHTML=tabs.map(([v,icn,lbl])=> v==='register'
+    ? `<div><button class="fab" data-go="register" aria-label="${t('register')}">${ic('plus')}</button></div>`
+    : `<button class="tab ${S.view===v||(v==='children'&&S.view==='child')?'on':''}" data-go="${v}" aria-current="${S.view===v?'page':'false'}">${ic(icn)}${v==='alerts'&&late?`<span class="dot">${late}</span>`:''}<span>${t(lbl||v)}</span></button>`).join('');
+}
+function renderStatus(){
+  const b=$('#netBtn'); b.className='net-btn'+(S.online?'':' off');
+  b.innerHTML=S.online? ic('wifi') : ic('wifioff')+'<span>'+t('offline')+'</span>';
+  b.setAttribute('aria-label',S.online?'Online. Tap to go offline':'Offline. Tap to go online');
+  $('#statusbar').classList.toggle('dark', S.view==='login'||S.view==='child');
+}
+function render(){
+  const v=$('#view'); v.innerHTML=(V[S.view]||V.home)(); renderTabs(); renderStatus(); persist();
+  if(S.view==='register'&&S.reg&&S.reg.step===4) initSig();
+  if(S.view==='success') drawQR('qr',S.params.id);
+  renderJump();
+}
+function go(view, params={}, push=true){
+  if(push && S.view!==view) S.history.push({view:S.view,params:S.params});
+  S.view=view; S.params=params; closeSheet(); render(); $('#view').scrollTop=0;
+}
+function back(){const h=S.history.pop(); if(h){S.view=h.view;S.params=h.params;render()} else go(S.role==='officer'?'dash':'home',{},false)}
+
+function renderJump(){
+  const j=$('#jump'); if(!j) return;
+  const items = S.role==='officer'
+    ? [['dash','Officer overview','chart'],['sites','Worksites','hat'],['map','Map','map'],['alerts','Alerts','bell'],['sup','Switch to site supervisor','users']]
+    : S.role==='supervisor'
+    ? [['home','Site home','home'],['register','Register a child','plus'],['children','Children list','users'],['childx','A child\u2019s record','user'],['map','Map','map'],['alerts','Alerts','bell'],['off','Switch to block officer','chart']]
+    : [['login','Sign in','user']];
+  j.innerHTML=items.map(([k,l,icn])=>`<button data-jump="${k}">${ic(icn)}${l}</button>`).join('');
+}
+
+/* =========================================================
+   SIGNATURE PAD
+========================================================= */
+function initSig(){
+  const cv=$('#sig'); if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=window.devicePixelRatio||1;
+  cv.width=r.width*dpr; cv.height=r.height*dpr; const ctx=cv.getContext('2d'); ctx.scale(dpr,dpr);
+  ctx.lineWidth=2.6; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#1B2A5C';
+  if(S.reg.sigData){const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,r.width,r.height);im.src=S.reg.sigData}
+  let drawing=false,last=null;
+  const pos=e=>{const b=cv.getBoundingClientRect();return {x:e.clientX-b.left,y:e.clientY-b.top}};
+  cv.onpointerdown=e=>{drawing=true;last=pos(e);cv.setPointerCapture(e.pointerId)};
+  cv.onpointermove=e=>{if(!drawing)return;const p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;
+    if(!S.reg.signed){S.reg.signed=true;const ph=document.querySelector('.ph-txt');ph&&ph.remove();updateNext()}};
+  cv.onpointerup=()=>{drawing=false;S.reg.sigData=cv.toDataURL()};
+}
+function updateNext(){const b=document.querySelector('[data-act="regNext"]'); if(b&&S.reg.step===4) b.disabled=!(S.reg.consent&&S.reg.readAloud&&S.reg.signed)}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+function regValidate(){
+  const r=S.reg; let ok=true;
+  const flag=(id,bad)=>{const f=document.getElementById(id);if(f)f.classList.toggle('err',bad);if(bad)ok=false};
+  if(r.step===1){flag('f-name',r.name.trim().length<2); const a=+r.age; flag('f-age',r.age===''||isNaN(a)||a<0||a>14)}
+  if(r.step===2){flag('f-parent',r.parent.trim().length<2)}
+  return ok;
+}
+function saveChild(){
+  const r=S.reg, site=byId(SITES,S.site), age=+r.age;
+  const arrived=new Date(r.arrived+'T00:00:00');
+  const id='SBT-'+String(27000+S.children.length*13).slice(-5)+'-'+String.fromCharCode(65+S.children.length%26);
+  const w = age<1?6.8: age<3? 8+age*1.6 : age<6? 11+(age-3)*1.9 : 17+(age-6)*2.6;
+  const c={id,name:r.name.trim(),gender:r.gender,age,parent:r.parent.trim(),phone:r.phone||'',origin:r.origin,work:r.work,siteId:S.site,arrived,
+    schoolId:r.school||nearest(site,SCHOOLS)[0].id, awId:r.aw||nearest(site,AWCS)[0].id,
+    schoolStatus:age>=6?'pending':'na',schoolDays:null,awStatus:age<6?'pending':'na',awDays:null,
+    cls:age>=6?+r.cls:null, vDue:Math.min(VAX.length, age<1?3: age<2?6: age<6?8:9), vDone:r.vaxCard==='Yes'?Math.min(VAX.length, age<1?3: age<2?6: age<6?8:9):0,
+    journey:[{place:r.origin+' (home)',from:new Date(arrived-60*day),to:new Date(arrived-day),kind:'home'},{place:site.name,siteId:S.site,from:arrived,to:null,kind:'site',now:true}],
+    weights:[{d:arrived,kg:+w.toFixed(1)}], synced:S.online, color:FACE[S.children.length%FACE.length]};
+  S.children.unshift(c);
+  if(!S.online) S.queue.push(id);
+  S.reg=null; go('success',{id},false);
+}
+function doSync(){
+  if(!S.online||!S.queue.length) return;
+  const btn=document.querySelector('[data-act="sync"]'); if(btn){btn.disabled=true;btn.innerHTML=ic('sync','spin')}
+  setTimeout(()=>{const n=S.queue.length; S.children.forEach(c=>{if(S.queue.includes(c.id))c.synced=true}); S.queue=[]; render(); toast(`${n} record${n>1?'s':''} synced. School and anganwadi alerted.`,'cloud')},1200);
+}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,[data-pin],a'); if(!el) return;
+  const d=el.dataset;
+  if(el.id==='netBtn'||d.act==='toggleNet'){S.online=!S.online; render(); toast(S.online?(S.queue.length?'Back online. Tap Sync now to send saved records.':'Back online'):'Offline. New records will save on this phone.',S.online?'wifi':'wifioff'); return}
+  if(d.lang){S.lang=d.lang; render(); return}
+  if(d.role){S.roleSel=d.role; render(); return}
+  if(d.jump){
+    const k=d.jump;
+    if(k==='sup'||k==='off'){S.role=k==='sup'?'supervisor':'officer';S.history=[];go(S.role==='officer'?'dash':'home',{},false);return}
+    if(k==='childx'){go('child',{id:siteKids(S.site)[2].id});return}
+    if(k==='register'){S.reg=null;go('register');return}
+    go(k);return;
+  }
+  if(d.go){ if(d.go==='register') S.reg=null; if(d.filter) S.filter=d.filter; else if(d.go==='children') {S.filter='all'} go(d.go); return}
+  if(d.back!==undefined){back();return}
+  if(d.child){go('child',{id:d.child});return}
+  if(d.tab){S.params.tab=d.tab; render(); return}
+  if(d.filter){S.filter=d.filter; render(); return}
+  if(d.layer){S.mapLayer=d.layer; render(); return}
+  if(d.af){S.params.af=d.af; render(); return}
+  if(d.site){S.filter='all';go('children',{site:d.site});return}
+  if(d.pin){const [type,id]=d.pin.split(':'); S.params.sel=id; if(S.view==='map'){document.querySelectorAll('.pin circle[opacity]').forEach(x=>x.remove())} pinSheet(type,id); return}
+  if(d.seg){S.reg[d.seg]=d.v; render(); return}
+  if(d.pick){S.reg[d.pick]=d.v; render(); return}
+  if(d.dest){S.params.dest=d.dest; document.querySelectorAll('.opt').forEach(o=>o.classList.toggle('sel',o.dataset.dest===d.dest)); return}
+  switch(d.act){
+    case 'signin': S.role=S.roleSel; S.history=[]; go(S.role==='officer'?'dash':'home',{},false); toast(S.role==='officer'?'Signed in as block officer':'Signed in. '+byId(SITES,S.site).name,'check'); break;
+    case 'sync': doSync(); break;
+    case 'scan': scanSheet(); break;
+    case 'scanFound': { const c=S.children.find(x=>x.id===d.id); closeSheet(); toast(`Found ${c.name}. Record from ${byId(SITES,c.siteId).name}.`,'qr'); go('child',{id:c.id}); break; }
+    case 'pickMove': pickMoveSheet(); break;
+    case 'move': moveSheet(d.id); break;
+    case 'confirmMove': {
+      const c=S.children.find(x=>x.id===d.id); const dest=S.params.dest;
+      if(!dest){toast('Pick where the family is going','alert');return}
+      c.moving={to:dest,date:$('#mvdate').value}; persist(); closeSheet(); render();
+      toast(dest==='home'?`Record sent to the ${c.origin} block office`:`Record sent to ${byId(SITES,dest).name}`,'move'); break; }
+    case 'card': cardSheet(S.params.id); break;
+    case 'regBack': if(!S.reg||S.reg.step===1){S.reg=null;back()} else {S.reg.step--;render()} break;
+    case 'regNext': if(!regValidate()) return; if(S.reg.step<5){S.reg.step++;render();$('#view').scrollTop=0} else saveChild(); break;
+    case 'regAgain': S.reg=null; go('register',{},false); break;
+    case 'clearSig': S.reg.signed=false; S.reg.sigData=null; render(); break;
+    case 'switchRole': S.role=S.role==='officer'?'supervisor':'officer'; S.history=[]; go(S.role==='officer'?'dash':'home',{},false); break;
+    case 'reset': try{localStorage.removeItem(STORE)}catch(e){} S.children=seedChildren(); S.queue=[]; S.moves=[]; render(); toast('Sample data restored','sync'); break;
+    case 'logout': S.role=null; S.roleSel=null; S.history=[]; go('login',{},false); break;
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeSheet();
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-pin]')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
+});
+document.addEventListener('input',e=>{
+  const el=e.target;
+  if(el.id==='q'){S.q=el.value; const pos=el.selectionStart; render(); const q=$('#q'); q.focus(); q.setSelectionRange(pos,pos); return}
+  if(el.dataset.k && S.reg){S.reg[el.dataset.k]=el.value; const f=el.closest('.field'); f&&f.classList.remove('err');
+    if(el.dataset.k==='age') {/* step 3 depends on age */}
+  }
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.id==='c1'){S.reg.readAloud=el.checked;updateNext()}
+  if(el.id==='c2'){S.reg.consent=el.checked;updateNext()}
+  if(el.id==='photo'&&el.files[0]){const fr=new FileReader();fr.onload=()=>{S.reg.photo=fr.result;render()};fr.readAsDataURL(el.files[0])}
+});
+$('#scrim').addEventListener('click',closeSheet);
+
+/* clock */
+function tick(){const d=new Date();$('#clock').textContent=d.getHours()%12||12; $('#clock').textContent+= ':'+String(d.getMinutes()).padStart(2,'0')}
+tick(); setInterval(tick,15000);
+
+/* boot */
+load(); S.view='login'; render();
+setTimeout(()=>$('#splash').classList.add('hide'),1300);
+</script>
+</body>
+</html>
