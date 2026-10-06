@@ -8,13 +8,6 @@
 [![Sector](https://img.shields.io/badge/Sector-Women%20%26%20Child-1B2A5C?style=for-the-badge)](#-the-problem)
 [![Zone](https://img.shields.io/badge/Zone-Maharashtra-1F7A7A?style=for-the-badge)](#-pilot-plan)
 
-![HTML5](https://img.shields.io/badge/HTML5-single%20file-E34F26?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-no%20framework-1572B6?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![Offline first](https://img.shields.io/badge/Offline-first-2E8B57?style=flat-square)
-![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Prototype-F28C28?style=flat-square)
-
 **[🚀 Live demo]()** · **[✨ Features](#-features)** · **[🗺️ How it works](#%EF%B8%8F-how-it-works)** · **[👥 Team](#-team)**
 
 </div>
